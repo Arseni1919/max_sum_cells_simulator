@@ -95,6 +95,7 @@ cell_size = CELL_SIZE['CUSTOM']
 PADDING = 2
 DISTANCE_BETWEEN_CELLS = CELL_SIZE['CUSTOM'] + PADDING
 # ---
+# show_ranges = True
 show_ranges = False
 need_to_save_results = False
 adding_to_file_name = ''
@@ -103,20 +104,19 @@ need_to_plot_variance = False
 need_to_plot_min_max = True
 alpha = 0.025  # for confidence intervals in graphs
 speed = 5  # bigger -slower, smaller - faster. don't ask why
-num_of_agents = 4
-num_of_targets = 4
+num_of_agents = 20
+num_of_targets = 10
 use_rate = False  # if False - it uses the num_of_targets variable, but still also uses target_rate
 target_rate = 0.055
 
-target_range = (100, 100)  # max and min value of target
-REQ = 100
-MR = 2.5 * cell_size
-SR = 2.5 * cell_size
+REQ = 120
+MR = 1.5 * cell_size
+SR = 1.5 * cell_size
 CRED = 30
 MINUS_INF = -500000
 ITERATIONS = 10
 ITERATIONS_IN_SMALL_LOOPS = 10
-NUMBER_OF_PROBLEMS = 10
+NUMBER_OF_PROBLEMS = 30
 
 algorithms_to_check = [
     ('max_sum_cells', {}),
@@ -132,7 +132,10 @@ FLATTEN = True
 # -------------------------------------------------- #
 
 file_name = "last_weights.txt"
+# LOAD_PREVIOUS_POSITIONS = True
+LOAD_PREVIOUS_POSITIONS = False
 # LOAD_PREVIOUS_WEIGHTS = True
 LOAD_PREVIOUS_WEIGHTS = False
 SAVE_WEIGHTS = True
 # SAVE_WEIGHTS = False
+

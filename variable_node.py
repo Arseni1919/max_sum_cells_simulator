@@ -14,8 +14,9 @@ class VariableNode:
         self.future_pos = pos
         self.neighbours = []
         self.message_box = {}
-        if LOAD_PREVIOUS_WEIGHTS:
-            self.rund = load_weight_of(self.name, file_name)
+        if LOAD_PREVIOUS_POSITIONS:
+            # self.rund = load_weight_of(self.name, file_name)['rund']
+            self.pos = load_weight_of(self.name, file_name)['pos']
         else:
             self.rund = get_random_num()
 

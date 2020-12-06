@@ -58,13 +58,26 @@ def plot_results_if():
     pass
 
 
+def print_main(description, order, pred=''):
+    logging.info("%s --- %s: %s --- " % (pred, description, order))
+    # print(f' --- {description}: {order} --- ')
+
 def init_problem(problem):
-    logging.info("---------- ---------- Problem: %s ---------- ----------" % (problem + 1))
     all_sprites = create_all_sprites()
     all_agents = create_all_agents(all_sprites)
-
+    reset_all(all_sprites, all_agents)
     return all_sprites, all_agents
 
+
+def reset_all(all_sprites, all_agents):
+    if LOAD_PREVIOUS_POSITIONS:
+        for sprite in all_sprites:
+            sprite.pos = load_weight_of(sprite.name, file_name)['pos']
+        for agent in all_agents:
+            # agent.rund = load_weight_of(agent.name, file_name)['rund']
+            agent.pos = load_weight_of(agent.name, file_name)['pos']
+            agent.prev_pos = load_weight_of(agent.name, file_name)['pos']
+            agent.initial_pos = load_weight_of(agent.name, file_name)['pos']
 
 # Create Field
 def create_field(all_sprites, cells):
@@ -84,7 +97,7 @@ def create_field(all_sprites, cells):
 # Create targets
 def create_targets(cell_size, all_sprites, targets, cells,
                    ratio=0.3,
-                   target_range=(1, 4),
+                   req=-1,
                    use_rate=True,
                    num_of_targets=-1):
     order = 1
@@ -94,7 +107,7 @@ def create_targets(cell_size, all_sprites, targets, cells,
                 new_target = TargetSprite(
                     cell_size,
                     order=order,
-                    req=random.randint(target_range[0], target_range[1]),
+                    req=req,
                     surf_center=cell.get_pos()
                 )
                 cell.prop = new_target
@@ -111,7 +124,7 @@ def create_targets(cell_size, all_sprites, targets, cells,
                 new_target = TargetSprite(
                     cell_size,
                     order=order,
-                    req=random.randint(target_range[0], target_range[1]),
+                    req=req,
                     surf_center=cell.get_pos()
                 )
                 cell.prop = new_target
@@ -174,7 +187,7 @@ def create_all_sprites():
     print('height/weight: ', math.sqrt(len(cells.sprites())))
 
     # Create targets on field
-    create_targets(cell_size, all_sprites, targets, cells, target_rate, target_range, use_rate, num_of_targets)
+    create_targets(cell_size, all_sprites, targets, cells, target_rate, REQ, use_rate, num_of_targets)
 
     # Create agents on field
     create_robots(cell_size, all_sprites, agents, cells,
