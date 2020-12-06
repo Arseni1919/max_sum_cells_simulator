@@ -1,7 +1,15 @@
 from CONSTANTS import *
 
 
-def blit_pygame(screen, all_sprites):
+def update_sprites_with_new_positions(all_sprites, new_positions):
+    for sprite in all_sprites:
+        if sprite.name in new_positions:
+            new_pos = new_positions[sprite.name]
+            sprite.set_pos(new_pos)
+
+
+def blit_pygame(screen, all_sprites, new_positions):
+    update_sprites_with_new_positions(all_sprites, new_positions)
     all_arrived = False
     while not all_arrived:
         screen.fill(SKY_COLOR)
@@ -12,4 +20,5 @@ def blit_pygame(screen, all_sprites):
 
         # Update the display
         pygame.display.flip()
+        time.sleep(1)
         all_arrived = True

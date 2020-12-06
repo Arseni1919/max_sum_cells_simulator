@@ -19,30 +19,36 @@ import itertools
 # from tqdm import tqdm
 from pprint import pprint
 import statistics
+import collections
 from collections import namedtuple
+import operator
+from prettytable import PrettyTable
+from termcolor import colored
 
-CellTuple = namedtuple('CellTuple', ['pos',])
-TargetTuple = namedtuple('TargetTuple', ['pos', 'req', 'name', 'num'])
-AgentTuple = namedtuple('AgentTuple', ['pos', 'num_of_robot_nei', 'num_of_target_nei', 'name', 'num', 'cred', 'SR', 'MR'])
-MessageType = namedtuple('MessageType', ['from_var_to_func',
-                                         'from_var_to_func_only_pos',
-                                         'from_var_to_func_dir',
-                                         'from_func_pos_collisions_to_var',
-                                         'from_func_dir_collisions_to_var',
-                                         'from_func_target_to_var'])
-message_types = MessageType(from_var_to_func='from_var_to_func',
-                            from_var_to_func_only_pos='from_var_to_func_only_pos',
-                            from_var_to_func_dir='from_var_to_func_dir',
-                            from_func_pos_collisions_to_var='from_func_pos_collisions_to_var',
-                            from_func_dir_collisions_to_var='from_func_dir_collisions_to_var',
-                            from_func_target_to_var='from_func_target_to_var')
-from_func_to_var_types = (message_types.from_func_pos_collisions_to_var, message_types.from_func_target_to_var,
-                          message_types.from_func_dir_collisions_to_var)
-dictionary_message_types = (message_types.from_func_pos_collisions_to_var, message_types.from_func_target_to_var,
-                            message_types.from_func_dir_collisions_to_var, message_types.from_var_to_func,
-                            message_types.from_var_to_func_dir)
-TypesOfRequirement = namedtuple('TypesOfRequirement', ['copy', 'copy_var_dicts', 'copy_func_dicts'])
-copy_types = TypesOfRequirement('copy', 'copy_var_dicts', 'copy_func_dicts')
+# from table_ploter import TablePlotter
+
+# CellTuple = namedtuple('CellTuple', ['pos',])
+# TargetTuple = namedtuple('TargetTuple', ['pos', 'req', 'name', 'num'])
+# AgentTuple = namedtuple('AgentTuple', ['pos', 'num_of_robot_nei', 'num_of_target_nei', 'name', 'num', 'cred', 'SR', 'MR'])
+# MessageType = namedtuple('MessageType', ['from_var_to_func',
+#                                          'from_var_to_func_only_pos',
+#                                          'from_var_to_func_dir',
+#                                          'from_func_pos_collisions_to_var',
+#                                          'from_func_dir_collisions_to_var',
+#                                          'from_func_target_to_var'])
+# message_types = MessageType(from_var_to_func='from_var_to_func',
+#                             from_var_to_func_only_pos='from_var_to_func_only_pos',
+#                             from_var_to_func_dir='from_var_to_func_dir',
+#                             from_func_pos_collisions_to_var='from_func_pos_collisions_to_var',
+#                             from_func_dir_collisions_to_var='from_func_dir_collisions_to_var',
+#                             from_func_target_to_var='from_func_target_to_var')
+# from_func_to_var_types = (message_types.from_func_pos_collisions_to_var, message_types.from_func_target_to_var,
+#                           message_types.from_func_dir_collisions_to_var)
+# dictionary_message_types = (message_types.from_func_pos_collisions_to_var, message_types.from_func_target_to_var,
+#                             message_types.from_func_dir_collisions_to_var, message_types.from_var_to_func,
+#                             message_types.from_var_to_func_dir)
+# TypesOfRequirement = namedtuple('TypesOfRequirement', ['copy', 'copy_var_dicts', 'copy_func_dicts'])
+# copy_types = TypesOfRequirement('copy', 'copy_var_dicts', 'copy_func_dicts')
 
 
 OBJECTS = {}
@@ -86,8 +92,10 @@ logging.basicConfig(format=_format, level=logging.INFO,
 GRID_SIDE_SIZE = 10
 CELL_SIZE['CUSTOM'] = int(SCREEN_HEIGHT / GRID_SIDE_SIZE - 2)
 cell_size = CELL_SIZE['CUSTOM']
+PADDING = 2
+DISTANCE_BETWEEN_CELLS = CELL_SIZE['CUSTOM'] + PADDING
 # ---
-show_ranges = True
+show_ranges = False
 need_to_save_results = False
 adding_to_file_name = ''
 need_to_plot_results = True
@@ -101,12 +109,30 @@ use_rate = False  # if False - it uses the num_of_targets variable, but still al
 target_rate = 0.055
 
 target_range = (100, 100)  # max and min value of target
+REQ = 100
 MR = 2.5 * cell_size
 SR = 2.5 * cell_size
-cred = 30
+CRED = 30
+MINUS_INF = -500000
 ITERATIONS = 10
+ITERATIONS_IN_SMALL_LOOPS = 10
 NUMBER_OF_PROBLEMS = 10
 
 algorithms_to_check = [
     ('max_sum_cells', {}),
 ]
+
+# RANDOM_FUNCS = True
+# RANDOM_FUNCS = False
+from_c_to_r = (2, 1)
+
+# FLATTEN = False
+FLATTEN = True
+
+# -------------------------------------------------- #
+
+file_name = "last_weights.txt"
+# LOAD_PREVIOUS_WEIGHTS = True
+LOAD_PREVIOUS_WEIGHTS = False
+SAVE_WEIGHTS = True
+# SAVE_WEIGHTS = False

@@ -18,6 +18,12 @@ class CellSprite(pygame.sprite.Sprite):
         self.num_of_agent = order
         self.name = 'cell_%s' % order
 
+        # Number of Robot
+        font = pygame.font.SysFont("comicsansms", int(cell_size * 0.25))
+        text = font.render("%s" % self.num_of_agent, False, SKY_COLOR)
+        wt, ht = text.get_size()
+        self.surf.blit(text, (0, cell_size-ht))  # cell_size - wt
+
     def update(self):
         pass
 
@@ -29,6 +35,9 @@ class CellSprite(pygame.sprite.Sprite):
 
     def get_pos(self):
         return self.rect.center
+
+    def set_pos(self, pos):
+        self.rect.center = pos
 
     def get_num_of_agent(self):
         return self.num_of_agent

@@ -3,6 +3,11 @@ from cell_sprite import *
 from robot_sprite import *
 from target_sprite import *
 from title_sprite import *
+from cell import *
+from robot import *
+from target import *
+from variable_node import *
+from function_node import *
 
 
 def init_pygame():
@@ -13,6 +18,25 @@ def init_pygame():
     finish_sound = pygame.mixer.Sound("sounds/Bell_2.ogg")
     return clock, screen, finish_sound
 
+
+def go_back_to_initial_positions(all_sprites, all_agents, screen):
+    for sprite in all_sprites:
+        for agent in all_agents:
+            if sprite.name == agent.name:
+                sprite.set_pos(agent.initial_pos)
+                agent.pos = agent.initial_pos
+                agent.prev_pos = agent.initial_pos
+    first_screen_blit(screen, all_sprites)
+
+
+def first_screen_blit(screen, all_sprites):
+    # Draw all sprites
+    for entity in all_sprites:
+        screen.blit(entity.surf, entity.rect)
+
+    # Update the display
+    pygame.display.flip()
+    time.sleep(1)
 
 def close_pygame(finish_sound):
     finish_sound.play()
@@ -36,42 +60,20 @@ def plot_results_if():
 
 def init_problem(problem):
     logging.info("---------- ---------- Problem: %s ---------- ----------" % (problem + 1))
-    # Create groups to hold all kinds of sprites
-    # - all_sprites is used for rendering
-    agents = pygame.sprite.Group()
-    targets = pygame.sprite.Group()
-    cells = pygame.sprite.Group()
-    titles = pygame.sprite.Group()
-    all_sprites = pygame.sprite.Group()
+    all_sprites = create_all_sprites()
+    all_agents = create_all_agents(all_sprites)
 
-    # Create Field
-    create_field(all_sprites, cells)
-    print('height/weight: ', math.sqrt(len(cells.sprites())))
-
-    # Create targets on field
-    create_targets(cell_size, all_sprites, targets, cells, target_rate, target_range, use_rate, num_of_targets)
-
-    # Create agents on field
-    create_agents(cell_size, all_sprites, agents, cells,
-                  num_of_agents=num_of_agents,
-                  MR=MR,
-                  SR=SR,
-                  cred=cred,
-                  show_ranges=show_ranges,
-                  speed=speed)
-    # add_cell_and_target_tuples(agents, cells, targets)
-    create_dictionary(agents, targets)
-    return all_sprites
+    return all_sprites, all_agents
 
 
 # Create Field
 def create_field(all_sprites, cells):
     num = 1
-    for i in range(int(SCREEN_HEIGHT / (cell_size + 2))):
-        for j in range(int(SCREEN_HEIGHT / (cell_size + 2))):
+    for i in range(int(SCREEN_HEIGHT / (cell_size + PADDING))):
+        for j in range(int(SCREEN_HEIGHT / (cell_size + PADDING))):
             surf_center = (
-                2 + i * (cell_size + 2) + (cell_size / 2),
-                2 + j * (cell_size + 2) + (cell_size / 2)
+                PADDING + i * (cell_size + PADDING) + (cell_size / 2),
+                PADDING + j * (cell_size + PADDING) + (cell_size / 2)
             )
             new_cell = CellSprite(cell_size, order=num, surf_center=surf_center)
             num += 1
@@ -93,7 +95,7 @@ def create_targets(cell_size, all_sprites, targets, cells,
                     cell_size,
                     order=order,
                     req=random.randint(target_range[0], target_range[1]),
-                    surf_center=cell.surf_center
+                    surf_center=cell.get_pos()
                 )
                 cell.prop = new_target
                 targets.add(new_target)
@@ -102,6 +104,7 @@ def create_targets(cell_size, all_sprites, targets, cells,
     else:
         if num_of_targets == -1:
             print('[ERROR]: bad')
+            raise RuntimeError('BADDDD')
         while True:
             cell = random.choice(cells.sprites())
             if not cell.prop:
@@ -109,7 +112,7 @@ def create_targets(cell_size, all_sprites, targets, cells,
                     cell_size,
                     order=order,
                     req=random.randint(target_range[0], target_range[1]),
-                    surf_center=cell.surf_center
+                    surf_center=cell.get_pos()
                 )
                 cell.prop = new_target
                 targets.add(new_target)
@@ -119,7 +122,7 @@ def create_targets(cell_size, all_sprites, targets, cells,
                     break
 
 
-def create_agents(cell_size, all_sprites, agents, cells,
+def create_robots(cell_size, all_sprites, agents, cells,
                   num_of_agents=4,
                   ratio=0.05,
                   MR=round(3.5 * CELL_SIZE['BIG']),
@@ -137,7 +140,7 @@ def create_agents(cell_size, all_sprites, agents, cells,
                 if random.random() < ratio and cell.prop is None:
                     new_agent = RobotSprite(cell_size=cell_size,
                                             number_of_robot=agent,
-                                            surf_center=cell.surf_center,
+                                            surf_center=cell.get_pos(),
                                             MR=MR,
                                             SR=SR,
                                             cred=cred,
@@ -155,3 +158,49 @@ def create_dictionary(agents, targets):
         OBJECTS[agent.get_name()] = agent
     for target in targets.sprites():
         OBJECTS[target.get_name()] = target
+
+
+def create_all_sprites():
+    # Create groups to hold all kinds of sprites
+    # - all_sprites is used for rendering
+    agents = pygame.sprite.Group()
+    targets = pygame.sprite.Group()
+    cells = pygame.sprite.Group()
+    # titles = pygame.sprite.Group()
+    all_sprites = pygame.sprite.Group()
+
+    # Create Field
+    create_field(all_sprites, cells)
+    print('height/weight: ', math.sqrt(len(cells.sprites())))
+
+    # Create targets on field
+    create_targets(cell_size, all_sprites, targets, cells, target_rate, target_range, use_rate, num_of_targets)
+
+    # Create agents on field
+    create_robots(cell_size, all_sprites, agents, cells,
+                  num_of_agents=num_of_agents,
+                  MR=MR,
+                  SR=SR,
+                  cred=CRED,
+                  show_ranges=show_ranges,
+                  speed=speed)
+    # add_cell_and_target_tuples(agents, cells, targets)
+    create_dictionary(agents, targets)
+    return all_sprites
+
+
+def create_all_agents(all_sprites):
+    all_agents = []
+    for sprite in all_sprites:
+        if 'robot' in sprite.name:
+            all_agents.append(VariableNode(name=sprite.name, num=sprite.num_of_agent, domain=[], pos=sprite.get_pos()))
+        elif 'target' in sprite.name:
+            all_agents.append(FunctionNode(name=sprite.name, num=sprite.num_of_agent, func=None, pos=sprite.get_pos()))
+        elif 'cell' in sprite.name:
+            all_agents.append(FunctionNode(name=sprite.name, num=sprite.num_of_agent,
+                                           func=func_cell, pos=sprite.get_pos()))
+        else:
+            raise RuntimeError('[ERROR]: unknown sprite')
+    return all_agents
+
+

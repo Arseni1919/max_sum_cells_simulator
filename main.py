@@ -10,19 +10,17 @@ def main():
     clock, screen, finish_sound = init_pygame()
 
     for problem in range(NUMBER_OF_PROBLEMS):
-
-        all_sprites = init_problem(problem)
+        all_sprites, all_agents = init_problem(problem)
         time.sleep(2)
 
         for alg_name, params in algorithms_to_check:
-
             algorithm = get_the_algorithm(alg_name)
+            go_back_to_initial_positions(all_sprites, all_agents, screen)
 
             for i in range(ITERATIONS):
-
-                new_positions = algorithm(params=params)
-
-                blit_pygame(screen, all_sprites)
+                new_positions = algorithm(params=params, all_agents=all_agents)
+                # new_positions = None
+                blit_pygame(screen, all_sprites, new_positions)
 
     close_pygame(finish_sound)
     pickle_results_if()

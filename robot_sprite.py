@@ -18,7 +18,7 @@ class RobotSprite(pygame.sprite.Sprite):
                  ):
         super(RobotSprite, self).__init__()
         self.cell_size = cell_size
-        self.number_of_agent = number_of_robot
+        self.num_of_agent = number_of_robot
         self.name = 'robot_%s' % number_of_robot
         self.MR = int(MR)
         self.SR = int(SR)
@@ -202,7 +202,7 @@ class RobotSprite(pygame.sprite.Sprite):
     #     return self.curr_robot_nei
 
     def get_num_of_agent(self):
-        return self.number_of_agent
+        return self.num_of_agent
 
     # def find_all_nei(self, agents, targets, factor_graph):
     #     # TargetTuple = namedtuple('TargetTuple', ['pos', 'req', 'name', 'num'])
