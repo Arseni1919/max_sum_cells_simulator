@@ -12,20 +12,15 @@ def max_sum_cells_alg(params, all_agents):
     choice_list = create_choice_list(all_agents)
 
     for iteration in range(ITERATIONS_IN_SMALL_LOOPS):
-        print_iteration(iteration)
+        print_iteration_in_smaller_loop(iteration)
         send_message(all_agents, iteration)
         extend_choice_list(all_agents, iteration, choice_list)
 
     assignments = get_choices(all_agents, ITERATIONS_IN_SMALL_LOOPS - 1)
     new_positions = get_new_positions(assignments, robots_dict, cells_dict)
-    new_positions = analyze_new_positions(new_positions, robots_dict, cells_dict, choice_list)
-    return new_positions, calc_collisions(new_positions)
-
-
-def print_iteration(iteration):
-    print(f'\rIteration in a smaller loop: {iteration + 1}', end='')
-    if iteration == ITERATIONS_IN_SMALL_LOOPS-1:
-        print()
+    collisions = calc_collisions(new_positions)
+    new_positions = analyze_and_correct_new_positions(new_positions, robots_dict, cells_dict, choice_list)
+    return new_positions, collisions
 
 
 def get_new_positions(assignments, robots_dict, cells_dict):
@@ -155,36 +150,7 @@ def set_targets_funcs(targets, cells):
         target.func = create_func_target(cells_near_me=target.cells_in_range)
 
 
-def separate_all_agents(all_agents):
-    robots = []
-    targets = []
-    cells = []
-    robots_dict = {}
-    cells_dict = {}
-    for agent in all_agents:
-        if 'robot' in agent.name:
-            robots.append(agent)
-            robots_dict[agent.name] = agent
-        elif 'target' in agent.name:
-            targets.append(agent)
-        elif 'cell' in agent.name:
-            cells.append(agent)
-            cells_dict[agent.num] = agent
-        else:
-            raise RuntimeError('[ERROR]: unknown agent')
-    return robots, targets, cells, robots_dict, cells_dict
-
-
-def calc_collisions(new_positions):
-    col = 0
-    for robot_name_1, pos_1 in new_positions.items():
-        for robot_name_2, pos_2 in new_positions.items():
-            if robot_name_1 != robot_name_2 and distance(pos_1, pos_2) == 0:
-                col += 1
-    return col
-
-
-def analyze_new_positions(new_positions, robots_dict, cells_dict, choice_list):
+def analyze_and_correct_new_positions(new_positions, robots_dict, cells_dict, choice_list):
     for robot_name_1, pos_1 in new_positions.items():
         for robot_name_2, pos_2 in new_positions.items():
             if robot_name_1 != robot_name_2 and distance(pos_1, pos_2) == 0:

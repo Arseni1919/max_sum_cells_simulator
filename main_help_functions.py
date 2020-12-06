@@ -19,6 +19,32 @@ def init_pygame():
     return clock, screen, finish_sound
 
 
+def update_statistics(results_dict, graphs, all_agents, collisions, alg_name, iteration, problem):
+    results_dict[alg_name]['col'].append(collisions)
+    graphs[alg_name][iteration][problem] = calculate_convergence(all_agents)
+
+
+def calculate_convergence(all_agents):
+    robots, targets, cells, robots_dict, cells_dict = separate_all_agents(all_agents)
+    convergence = 0
+    for target in targets:
+        curr_conv = REQ
+        for robot in robots:
+            if distance(target.get_pos(), robot.get_pos()) <= SR:
+                curr_conv = max(0, curr_conv - CRED)
+        convergence += curr_conv
+    return convergence
+
+
+def create_results_dict():
+    # graphs[algorithm][iteration][problem] = convergence
+    results_dict = {}
+    graphs = {}
+    for alg_name, params in algorithms_to_check:
+        results_dict[alg_name] = {'col': []}
+        graphs[alg_name] = np.zeros((ITERATIONS, NUMBER_OF_PROBLEMS))
+    return results_dict, graphs
+
 def go_back_to_initial_positions(all_sprites, all_agents, screen):
     for sprite in all_sprites:
         for agent in all_agents:
@@ -50,16 +76,92 @@ def close_pygame(finish_sound):
     pygame.quit()
 
 
-def pickle_results_if():
-    pass
+def pickle_results_if(graphs, results_dict):
+    if need_to_save_results:
+        timestr = time.strftime("%d.%m.%Y-%H:%M:%S")
+        algorithms = graphs.keys()
+        for alg in algorithms:
+            timestr = timestr + '__%s' % alg
+        file_name = "data/%s_%s_file.data" % (timestr, adding_to_file_name)
+        # open the file for writing
+        with open(file_name, 'wb') as fileObject:
+            pickle.dump(graphs, fileObject)
+
+        collisions = {}
+        for alg_name, inner_dict in results_dict:
+            collisions[alg_name] = sum(inner_dict["col"])/2
+
+        file_name = "data/%s_%s_file.info" % (timestr, adding_to_file_name)
+        # open the file for writing
+        with open(file_name, 'wb') as fileObject:
+            info = {'graphs': list(graphs.keys()), 'collisions': collisions, 'grid_size': GRID_SIDE_SIZE,
+                    'num_of_targets': num_of_targets,
+                    'num_of_agents': num_of_agents, 'target_range': REQ, 'MR': MR, 'SR': SR, 'cred': CRED,
+                    'MAX_ITERATIONS': ITERATIONS, 'NUMBER_OF_PROBLEMS': NUMBER_OF_PROBLEMS}
+            pickle.dump(info, fileObject)
 
 
-def plot_results_if():
-    pass
+def plot_results_if(graphs):
+    if need_to_plot_results:
+        # print_t_test_table(graphs)
+        # plt.style.use('fivethirtyeight')
+        plt.style.use('bmh')
+        lines = ['-', '--', '-.', ':', ]
+        lines.reverse()
+        markers = [',', '+', '_', '.', 'o', '*']
+        markers.reverse()
+        marker_index, line_index = 0, 0
+        # num_of_iterations, num_of_problems = graphs[algorithms[0]].shape
+        t_value = t.ppf(1 - alpha, df=(NUMBER_OF_PROBLEMS - 1))
+        iterations = [i for i in range(ITERATIONS)]
+        # avr = np.average(a, 1)
+        # std = np.std(a, 1)
+
+        fig, ax = plt.subplots()
+
+        for algorithm, params in algorithms_to_check:
+
+            line_index = 0 if line_index == len(lines) else line_index
+            marker_index = 0 if marker_index == len(markers) else marker_index
+
+            matrix = graphs[algorithm]
+            avr = np.average(matrix, 1)
+            std = np.std(matrix, 1)
+
+            line = lines[line_index]
+            marker = markers[marker_index]
+
+            ax.plot(iterations, avr, '%s%s' % (marker, line), label=algorithm)
+
+            line_index += 1
+            marker_index += 1
+
+            if need_to_plot_variance:
+                # confidence interval
+                ax.fill_between(iterations, avr - t_value * std, avr + t_value * std,
+                                alpha=0.2, antialiased=True)
+
+            if need_to_plot_min_max:
+                # confidence interval
+                ax.fill_between(iterations, np.min(matrix, 1), np.max(matrix, 1),
+                                alpha=0.2, antialiased=True)
+
+        ax.legend(loc='upper right')
+        ax.set_title('Results')
+        ax.set_ylabel('Convergence')
+        ax.set_xlabel('Iterations')
+        # ax.set_xlim(xmin=iterations[0], xmax=iterations[-1])
+        fig.tight_layout()
+        plt.show()
+
+
+def print_results(results_dict):
+    for alg_name, inner_dict in results_dict.items():
+        print(colored(f'Collisions in {alg_name}: {sum(inner_dict["col"])/2} <- the set: {inner_dict["col"]}', 'yellow'))
 
 
 def print_main(description, order, pred=''):
-    logging.info("%s --- %s: %s --- " % (pred, description, order))
+    logging.info("%s: %s --- %s " % (description, order, pred))
     # print(f' --- {description}: {order} --- ')
 
 def init_problem(problem):

@@ -19,6 +19,7 @@ class FunctionNode:
             self.rund = get_random_num()
         self.cells_in_range = []
         self.occupied = False
+        self.fmr_set = []
 
     def get_pos(self):
         return self.pos

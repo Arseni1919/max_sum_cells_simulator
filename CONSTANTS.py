@@ -89,7 +89,7 @@ logging.basicConfig(format=_format, level=logging.INFO,
                     datefmt="%H:%M:%S")
 # logging.getLogger().setLevel(logging.DEBUG)
 
-GRID_SIDE_SIZE = 10
+GRID_SIDE_SIZE = 8
 CELL_SIZE['CUSTOM'] = int(SCREEN_HEIGHT / GRID_SIDE_SIZE - 2)
 cell_size = CELL_SIZE['CUSTOM']
 PADDING = 2
@@ -97,15 +97,16 @@ DISTANCE_BETWEEN_CELLS = CELL_SIZE['CUSTOM'] + PADDING
 # ---
 # show_ranges = True
 show_ranges = False
-need_to_save_results = False
+# need_to_save_results = False
+need_to_save_results = True
 adding_to_file_name = ''
 need_to_plot_results = True
 need_to_plot_variance = False
 need_to_plot_min_max = True
 alpha = 0.025  # for confidence intervals in graphs
 speed = 5  # bigger -slower, smaller - faster. don't ask why
-num_of_agents = 20
-num_of_targets = 10
+num_of_agents = 15
+num_of_targets = 5
 use_rate = False  # if False - it uses the num_of_targets variable, but still also uses target_rate
 target_rate = 0.055
 
@@ -114,11 +115,13 @@ MR = 1.5 * cell_size
 SR = 1.5 * cell_size
 CRED = 30
 MINUS_INF = -500000
-ITERATIONS = 10
+ITERATIONS = 20
 ITERATIONS_IN_SMALL_LOOPS = 10
-NUMBER_OF_PROBLEMS = 30
+NUMBER_OF_PROBLEMS = 10
 
 algorithms_to_check = [
+    ('random_walk', {}),
+    ('harels_algorithm', {}),
     ('max_sum_cells', {}),
 ]
 
