@@ -158,7 +158,7 @@ def analyze_and_correct_new_positions(new_positions, robots_dict, cells_dict, ch
                                  robot_name_2: robots_dict[robot_name_2]}
                 # print_runds(dict_to_print, cells_dict)
                 # graph_choice_list(choice_list)
-                print(colored('[ERROR]: Returning to prev pos!', 'yellow'))
+                print(colored('\n[ERROR]: Returning to prev pos!', 'yellow'))
                 return return_to_prev_pos(robots_dict)
     return new_positions
 

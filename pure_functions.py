@@ -1,5 +1,5 @@
 from CONSTANTS import *
-
+from tracker import tracker
 
 def load_weight_of(agent_name: str, file_to_load_name: str):
     with open(file_to_load_name, 'rb') as handle:
@@ -74,6 +74,8 @@ def separate_all_agents(all_agents):
 
 
 def print_iteration_in_smaller_loop(iteration):
-    print(f'\rIteration in a smaller loop: {iteration + 1}', end='')
-    if iteration == ITERATIONS_IN_SMALL_LOOPS-1:
-        print()
+    # print(f'\rIteration in a smaller loop: {iteration + 1}', end='')
+    tracker.curr_smaller_iteration = iteration
+    tracker.print_progress()
+    # if iteration == ITERATIONS_IN_SMALL_LOOPS-1:
+    #     print()

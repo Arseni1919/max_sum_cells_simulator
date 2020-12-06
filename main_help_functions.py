@@ -88,7 +88,7 @@ def pickle_results_if(graphs, results_dict):
             pickle.dump(graphs, fileObject)
 
         collisions = {}
-        for alg_name, inner_dict in results_dict:
+        for alg_name, inner_dict in results_dict.items():
             collisions[alg_name] = sum(inner_dict["col"])/2
 
         file_name = "data/%s_%s_file.info" % (timestr, adding_to_file_name)
@@ -156,6 +156,7 @@ def plot_results_if(graphs):
 
 
 def print_results(results_dict):
+    print()
     for alg_name, inner_dict in results_dict.items():
         print(colored(f'Collisions in {alg_name}: {sum(inner_dict["col"])/2} <- the set: {inner_dict["col"]}', 'yellow'))
 
@@ -286,7 +287,7 @@ def create_all_sprites():
 
     # Create Field
     create_field(all_sprites, cells)
-    print('height/weight: ', math.sqrt(len(cells.sprites())))
+    print('height/weight: ', math.sqrt(len(cells.sprites())), end='')
 
     # Create targets on field
     create_targets(cell_size, all_sprites, targets, cells, target_rate, REQ, use_rate, num_of_targets)
