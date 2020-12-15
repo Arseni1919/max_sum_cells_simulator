@@ -13,6 +13,7 @@ class VariableNode:
         self.pos = pos
         self.future_pos = pos
         self.neighbours = []
+        self.targets_nearby = []
         self.message_box = {}
         if LOAD_PREVIOUS_POSITIONS:
             # self.rund = load_weight_of(self.name, file_name)['rund']

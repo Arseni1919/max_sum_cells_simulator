@@ -123,6 +123,7 @@ def clear_domains_and_neighbours_update_runds_update_cells(all_agents, robots, t
             agent.update_rund()
     for robot in robots:
         robot.domain = []
+        robot.targets_nearby = []
         # robot.prev_pos = robot.pos
     for cell in cells:
         cell.occupied = False
@@ -132,9 +133,18 @@ def clear_domains_and_neighbours_update_runds_update_cells(all_agents, robots, t
 
 
 def set_FMR_for_targets(targets, robots):
+    create_target_neighbours_for_robots(targets, robots)
     for target in targets:
         target.fmr_set = select_FMR_nei(target, robots)
         # target.neighbours = target.fmr_set
+
+
+def create_target_neighbours_for_robots(targets, robots):
+    for robot in robots:
+        for target in targets:
+            dist = distance(robot.get_pos(), target.get_pos())
+            if dist <= SR + MR:
+                robot.targets_nearby.append(target)
 
 
 def select_FMR_nei(target, robots):
@@ -160,7 +170,7 @@ def select_FMR_nei(target, robots):
     while len(total_set) > r_value:
         max_degree, min_degree = 0, 0
         for nei in total_set:
-            degree = len(nei.neighbours)
+            degree = len(nei.targets_nearby)
             if nei in rest_set:
                 max_degree = degree if max_degree < degree else max_degree
             if nei in SR_set:
@@ -169,7 +179,7 @@ def select_FMR_nei(target, robots):
         if len(rest_set) > 0:
             selected_to_remove = rest_set[0]
             for nei in rest_set:
-                if len(nei.neighbours) == max_degree:
+                if len(nei.targets_nearby) == max_degree:
                     selected_to_remove = nei
                     break
             total_set.remove(selected_to_remove)
@@ -177,7 +187,7 @@ def select_FMR_nei(target, robots):
         else:
             selected_to_remove = SR_set[0]
             for nei in SR_set:
-                if len(nei.neighbours) == min_degree:
+                if len(nei.targets_nearby) == min_degree:
                     selected_to_remove = nei
                     break
             total_set.remove(selected_to_remove)

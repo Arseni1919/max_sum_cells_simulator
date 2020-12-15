@@ -4,15 +4,16 @@ from main_help_functions import *
 # ---------------------------
 # ------INPUT SETTINGS-------
 # ---------------------------
-file_name = "06.12.2020-19:20:33__random_walk__harels_algorithm__max_sum_cells__file.data"
+graph_file_name = "14.12.2020-17:31:03__random_walk__harels_algorithm__max_sum_cells__file.resu"
+# graph_file_name = "14.12.2020-17:53:39__random_walk__harels_algorithm__max_sum_cells__file.info"
 # need_to_plot_variance = False
 # need_to_plot_min_max = False
 # ---------------------------
 
-file_name = 'data/%s' % file_name
+graph_file_name = 'data/%s' % graph_file_name
 
-file_name = file_name[:-5] + '.info'
-with open(file_name, 'rb') as fileObject:
+graph_file_name = graph_file_name[:-5] + '.info'
+with open(graph_file_name, 'rb') as fileObject:
     # load the object from the file into var b
     info = pickle.load(fileObject)
     # pprint(info['collisions'])
@@ -21,13 +22,19 @@ with open(file_name, 'rb') as fileObject:
     pprint(info)
 
 
-file_name = file_name[:-5] + '.data'
-with open(file_name, 'rb') as fileObject:
+graph_file_name = graph_file_name[:-5] + '.graf'
+with open(graph_file_name, 'rb') as fileObject:
     # load the object from the file into var b
     graphs = pickle.load(fileObject)
     algorithms = list(graphs.keys())
     plot_results_if(graphs)
 
+
+graph_file_name = graph_file_name[:-5] + '.resu'
+with open(graph_file_name, 'rb') as fileObject:
+    # load the object from the file into var b
+    results_dict = pickle.load(fileObject)
+    plot_collisions(results_dict)
 
 # '.'
 # ','

@@ -50,6 +50,18 @@ from termcolor import colored
 # TypesOfRequirement = namedtuple('TypesOfRequirement', ['copy', 'copy_var_dicts', 'copy_func_dicts'])
 # copy_types = TypesOfRequirement('copy', 'copy_var_dicts', 'copy_func_dicts')
 
+# Import pygame.locals for easier access to key coordinates
+# Updated to conform to flake8 and black standards
+from pygame.locals import (
+    RLEACCEL,
+    K_UP,
+    K_DOWN,
+    K_LEFT,
+    K_RIGHT,
+    K_ESCAPE,
+    KEYDOWN,
+    QUIT,
+)
 
 OBJECTS = {}
 
@@ -70,33 +82,20 @@ CELL_SIZE = {
 SKY_COLOR = (135, 206, 250)
 # SPEED_MOVING = 10
 
-# Import pygame.locals for easier access to key coordinates
-# Updated to conform to flake8 and black standards
-from pygame.locals import (
-    RLEACCEL,
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-    K_ESCAPE,
-    KEYDOWN,
-    QUIT,
-)
-
 # for logging
 _format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=_format, level=logging.INFO,
                     datefmt="%H:%M:%S")
 # logging.getLogger().setLevel(logging.DEBUG)
 
-GRID_SIDE_SIZE = 8
+GRID_SIDE_SIZE = 15
 CELL_SIZE['CUSTOM'] = int(SCREEN_HEIGHT / GRID_SIDE_SIZE - 2)
 cell_size = CELL_SIZE['CUSTOM']
 PADDING = 2
 DISTANCE_BETWEEN_CELLS = CELL_SIZE['CUSTOM'] + PADDING
 # ---
-# show_ranges = True
-show_ranges = False
+show_ranges = True
+# show_ranges = False
 # need_to_save_results = False
 need_to_save_results = True
 adding_to_file_name = ''
@@ -105,19 +104,19 @@ need_to_plot_variance = False
 need_to_plot_min_max = True
 alpha = 0.025  # for confidence intervals in graphs
 speed = 5  # bigger -slower, smaller - faster. don't ask why
-num_of_agents = 15
+num_of_agents = 10
 num_of_targets = 5
 use_rate = False  # if False - it uses the num_of_targets variable, but still also uses target_rate
 target_rate = 0.055
 
 REQ = 120
 MR = 1.5 * cell_size
-SR = 1.5 * cell_size
+SR = 2.5 * cell_size
 CRED = 30
 MINUS_INF = -500000
-ITERATIONS = 5
-ITERATIONS_IN_SMALL_LOOPS = 5
-NUMBER_OF_PROBLEMS = 3
+ITERATIONS = 20
+ITERATIONS_IN_SMALL_LOOPS = 20
+NUMBER_OF_PROBLEMS = 10
 
 algorithms_to_check = [
     ('random_walk', {}),
@@ -125,12 +124,12 @@ algorithms_to_check = [
     ('max_sum_cells', {}),
 ]
 
-# RANDOM_FUNCS = True
-# RANDOM_FUNCS = False
 from_c_to_r = (2, 1)
 
 # FLATTEN = False
 FLATTEN = True
+# TARGETS_APART = True
+TARGETS_APART = False
 
 # -------------------------------------------------- #
 

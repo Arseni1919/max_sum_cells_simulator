@@ -12,7 +12,7 @@ def main():
     results_dict, graphs = create_results_dict()
 
     for problem in range(NUMBER_OF_PROBLEMS):
-        all_sprites, all_agents = init_problem(problem)
+        all_sprites, all_agents = create_problem()
         time.sleep(2)
 
         for alg_num, (alg_name, params) in enumerate(algorithms_to_check):
@@ -32,6 +32,7 @@ def main():
     print_results(results_dict)
     pickle_results_if(graphs, results_dict)
     plot_results_if(graphs)
+    plot_collisions(results_dict)
 
 
 if __name__ == '__main__':

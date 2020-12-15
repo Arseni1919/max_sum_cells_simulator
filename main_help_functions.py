@@ -82,16 +82,23 @@ def pickle_results_if(graphs, results_dict):
         algorithms = graphs.keys()
         for alg in algorithms:
             timestr = timestr + '__%s' % alg
-        file_name = "data/%s_%s_file.data" % (timestr, adding_to_file_name)
+        timestr = "data/%s_%s_file" % (timestr, adding_to_file_name)
+        file_name = "%s.graf" % timestr
         # open the file for writing
         with open(file_name, 'wb') as fileObject:
             pickle.dump(graphs, fileObject)
+
+        # file_name = "data/%s_%s_file.resu" % (timestr, adding_to_file_name)
+        file_name = "%s.resu" % timestr
+        with open(file_name, 'wb') as fileObject:
+            pickle.dump(results_dict, fileObject)
 
         collisions = {}
         for alg_name, inner_dict in results_dict.items():
             collisions[alg_name] = sum(inner_dict["col"])/2
 
-        file_name = "data/%s_%s_file.info" % (timestr, adding_to_file_name)
+        # file_name = "data/%s_%s_file.info" % (timestr, adding_to_file_name)
+        file_name = "%s.info" % timestr
         # open the file for writing
         with open(file_name, 'wb') as fileObject:
             info = {'graphs': list(graphs.keys()), 'collisions': collisions, 'grid_size': GRID_SIDE_SIZE,
@@ -112,14 +119,15 @@ def plot_results_if(graphs):
         markers.reverse()
         marker_index, line_index = 0, 0
         # num_of_iterations, num_of_problems = graphs[algorithms[0]].shape
-        t_value = t.ppf(1 - alpha, df=(NUMBER_OF_PROBLEMS - 1))
-        iterations = [i for i in range(ITERATIONS)]
+        # t_value = t.ppf(1 - alpha, df=(NUMBER_OF_PROBLEMS - 1))
+        l = len(graphs[list(graphs.keys())[0]])
+        iterations = [i+1 for i in range(len(graphs[list(graphs.keys())[0]]))]
         # avr = np.average(a, 1)
         # std = np.std(a, 1)
 
         fig, ax = plt.subplots()
 
-        for algorithm, params in algorithms_to_check:
+        for algorithm in graphs.keys():
 
             line_index = 0 if line_index == len(lines) else line_index
             marker_index = 0 if marker_index == len(markers) else marker_index
@@ -136,10 +144,10 @@ def plot_results_if(graphs):
             line_index += 1
             marker_index += 1
 
-            if need_to_plot_variance:
-                # confidence interval
-                ax.fill_between(iterations, avr - t_value * std, avr + t_value * std,
-                                alpha=0.2, antialiased=True)
+            # if need_to_plot_variance:
+            #     # confidence interval
+            #     ax.fill_between(iterations, avr - t_value * std, avr + t_value * std,
+            #                     alpha=0.2, antialiased=True)
 
             if need_to_plot_min_max:
                 # confidence interval
@@ -148,11 +156,33 @@ def plot_results_if(graphs):
 
         ax.legend(loc='upper right')
         ax.set_title('Results')
-        ax.set_ylabel('Convergence')
+        ax.set_ylabel('Coverage')
         ax.set_xlabel('Iterations')
+        ax.set_xticks(iterations)
         # ax.set_xlim(xmin=iterations[0], xmax=iterations[-1])
         fig.tight_layout()
         plt.show()
+
+
+def plot_collisions(results_dict):
+    # results_dict[alg_name] = {'col': []}
+    alg_names = list(results_dict.keys())
+    iterations = range(len(results_dict[alg_names[0]]['col']))
+    fig, ax = plt.subplots()
+
+    for alg_name in alg_names:
+        curr_col_list = results_dict[alg_name]['col']
+        cumsum_list = np.cumsum(curr_col_list)
+        ax.plot(iterations, cumsum_list, label=alg_name)
+
+    ax.legend(loc='upper right')
+    ax.set_title('Collisions')
+    ax.set_ylabel('Accumulated Collisions')
+    ax.set_xlabel('Accumulated Iterations')
+    # ax.set_xticks(iterations)
+    # ax.set_xlim(xmin=iterations[0], xmax=iterations[-1])
+    fig.tight_layout()
+    plt.show()
 
 
 def print_results(results_dict):
@@ -165,7 +195,28 @@ def print_main(description, order, pred=''):
     logging.info("%s: %s --- %s " % (description, order, pred))
     # print(f' --- {description}: {order} --- ')
 
-def init_problem(problem):
+
+def check_targets_apart(all_agents):
+    robots, targets, cells, robots_dict, cells_dict = separate_all_agents(all_agents=all_agents)
+    for target1 in targets:
+        for target2 in targets:
+            if target1.name != target2.name:
+                if distance(target1.get_pos(), target2.get_pos()) < 2*SR:
+                    return False
+    return True
+
+def create_problem():
+    good = False
+    all_sprites, all_agents = init_problem()
+    if TARGETS_APART:
+        while not good:
+            good = check_targets_apart(all_agents)
+            if not good:
+                all_sprites, all_agents = init_problem()
+    return all_sprites, all_agents
+
+
+def init_problem():
     all_sprites = create_all_sprites()
     all_agents = create_all_agents(all_sprites)
     reset_all(all_sprites, all_agents)
