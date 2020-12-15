@@ -67,8 +67,10 @@ OBJECTS = {}
 
 
 # Define constants for the screen width and height
-SCREEN_WIDTH = 1000
+# SCREEN_WIDTH = 1000
+SCREEN_WIDTH = 692
 SCREEN_HEIGHT = 690
+# SCREEN_WIDTH = SCREEN_HEIGHT + 202
 # SCREEN_HEIGHT = 850
 
 # have to be odd number for move method of Agent

@@ -14,7 +14,7 @@ def init_pygame():
     clock = pygame.time.Clock()
     pygame.mixer.init()
     pygame.init()
-    screen = pygame.display.set_mode((SCREEN_HEIGHT + 202, SCREEN_HEIGHT), pygame.SRCALPHA)
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
     finish_sound = pygame.mixer.Sound("sounds/Bell_2.ogg")
     return clock, screen, finish_sound
 
