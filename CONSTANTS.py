@@ -66,12 +66,45 @@ logging.basicConfig(format=_format, level=logging.INFO,
                     datefmt="%H:%M:%S")
 # logging.getLogger().setLevel(logging.DEBUG)
 
-GRID_SIDE_SIZE = 10
+GRID_SIDE_SIZE = 50
+NUM_OF_AGENTS = 80
+NUM_OF_TARGETS = 20
+NUMBER_OF_PROBLEMS = 10
+ITERATIONS_IN_BIG_LOOPS = 20
+ITERATIONS_IN_SMALL_LOOPS = 10
+DELAY_OF_COLLISION = 4
+# EXECUTE_DELAY = True
+EXECUTE_DELAY = False
+# TARGETS_APART = True
+TARGETS_APART = False
+
+ALGORITHMS_TO_CHECK = [
+    ('random_walk', {}),
+    ('harels_algorithm', {}),
+    ('max_sum_cells', {}),
+]
+
 CELL_SIZE['CUSTOM'] = int(SCREEN_HEIGHT / GRID_SIDE_SIZE - 2)
 cell_size = CELL_SIZE['CUSTOM']
 PADDING = 2
-DISTANCE_BETWEEN_CELLS = CELL_SIZE['CUSTOM'] + PADDING
+DISTANCE_BETWEEN_CELLS = cell_size + PADDING
 # ---
+
+alpha = 0.025  # for confidence intervals in graphs
+speed = 5  # bigger - slower, smaller - faster. don't ask why
+use_rate = False  # if False - it uses the num_of_targets variable, but still also uses target_rate
+target_rate = 0.055
+MINUS_INF = -50000
+from_c_to_r = (2, 1)
+# FLATTEN = False
+FLATTEN = True
+
+REQ = 120
+MR = 2.5 * cell_size
+SR = 2.5 * cell_size
+CRED = 30
+
+# -------------------------------------------------- #
 # SHOW_RANGES = True
 SHOW_RANGES = False
 # NEED_TO_SAVE_RESULTS = False
@@ -80,44 +113,7 @@ ADDING_TO_FILE_NAME = ''
 NEED_TO_PLOT_RESULTS = True
 NEED_TO_PLOT_VARIANCE = False
 NEED_TO_PLOT_MIN_MAX = True
-
-alpha = 0.025  # for confidence intervals in graphs
-speed = 5  # bigger - slower, smaller - faster. don't ask why
-
-NUM_OF_AGENTS = 30
-NUM_OF_TARGETS = 7
-use_rate = False  # if False - it uses the num_of_targets variable, but still also uses target_rate
-target_rate = 0.055
-
-REQ = 120
-MR = 1.5 * cell_size
-SR = 2.5 * cell_size
-CRED = 30
-MINUS_INF = -50000
-ITERATIONS = 5
-ITERATIONS_IN_SMALL_LOOPS = 10
-NUMBER_OF_PROBLEMS = 2
-DELAY_OF_COLLISION = 8
-EXECUTE_DELAY = True
-# EXECUTE_DELAY = False
-
-ALGORITHMS_TO_CHECK = [
-    ('random_walk', {}),
-    ('harels_algorithm', {}),
-    ('max_sum_cells', {}),
-
-
-]
-
-from_c_to_r = (2, 1)
-
-# FLATTEN = False
-FLATTEN = True
-# TARGETS_APART = True
-TARGETS_APART = False
-
 # -------------------------------------------------- #
-
 FILE_NAME = "last_weights.txt"
 # LOAD_PREVIOUS_POSITIONS = True
 LOAD_PREVIOUS_POSITIONS = False

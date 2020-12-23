@@ -4,7 +4,7 @@ from main_help_functions import *
 # ---------------------------
 # ------INPUT SETTINGS-------
 # ---------------------------
-graph_file_name = "data/23.12.2020-12:37:01__random_walk__harels_algorithm__max_sum_cells/23.12.2020-12:37:01__random_walk__harels_algorithm__max_sum_cells__file.graf"
+graph_file_name = "data/23.12.2020-13:16:48__random_walk__harels_algorithm__max_sum_cells/_file.graf"
 # need_to_plot_variance = False
 # need_to_plot_min_max = False
 # ---------------------------

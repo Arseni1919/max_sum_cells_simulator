@@ -19,7 +19,7 @@ def main():
             algorithm = get_the_algorithm(alg_name)
             reset_agents(all_sprites, all_agents, screen)
 
-            for i in range(ITERATIONS):
+            for i in range(ITERATIONS_IN_BIG_LOOPS):
                 tracker.update(problem, alg_num, i)
                 tracker.print_progress()
 

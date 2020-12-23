@@ -42,7 +42,7 @@ def create_results_dict():
     graphs = {}
     for alg_name, params in ALGORITHMS_TO_CHECK:
         results_dict[alg_name] = {'col': []}
-        graphs[alg_name] = np.zeros((ITERATIONS, NUMBER_OF_PROBLEMS))
+        graphs[alg_name] = np.zeros((ITERATIONS_IN_BIG_LOOPS, NUMBER_OF_PROBLEMS))
     return results_dict, graphs
 
 
@@ -127,7 +127,7 @@ def pickle_results_if(graphs, results_dict):
                     'MR': MR,
                     'SR': SR,
                     'cred': CRED,
-                    'MAX_ITERATIONS': ITERATIONS,
+                    'MAX_ITERATIONS': ITERATIONS_IN_BIG_LOOPS,
                     'NUMBER_OF_PROBLEMS': NUMBER_OF_PROBLEMS}
             pickle.dump(info, fileObject)
 

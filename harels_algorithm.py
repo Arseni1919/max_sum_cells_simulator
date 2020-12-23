@@ -76,14 +76,12 @@ def init_message_boxes(agents):
 
 
 def set_robots_domains(robots, cells):
-    mark_occupied_cells_by_robots(robots, cells)
+    # mark_occupied_cells_by_robots(robots, cells)
     for robot in robots:
         for cell in cells:
             dist = distance(robot.get_pos(), cell.get_pos())
             if dist <= DISTANCE_BETWEEN_CELLS:
-                # if dist == 0 or not cell.occupied:
-                #     robot.domain.append(cell.num)
-                if dist == 0:
+                if dist == 0 or not cell.occupied:
                     robot.domain.append(cell.num)
 
 

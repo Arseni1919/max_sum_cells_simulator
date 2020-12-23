@@ -24,7 +24,7 @@ class Tracker:
         )
         print(colored(f'\rProblem: ({self.curr_problem + 1}/{NUMBER_OF_PROBLEMS}), '
                       f'Alg: ({self.curr_alg_num + 1}/{len(ALGORITHMS_TO_CHECK)}), '
-                      f'Iter B: ({self.curr_bigger_iteration + 1}/{ITERATIONS}), '
+                      f'Iter B: ({self.curr_bigger_iteration + 1}/{ITERATIONS_IN_BIG_LOOPS}), '
                       f'Iter S: ({self.curr_smaller_iteration}/{ITERATIONS_IN_SMALL_LOOPS}), '
                       f'Progress: [{"#" * self.done}{"." * (self.biggest - self.done)}]', 'green'), end='')
 
