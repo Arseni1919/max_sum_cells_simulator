@@ -9,8 +9,10 @@ of underlying dynamics of those kind of problems.
 
 The initial settings are in `CONCTANTS.py` file.
 
-The screen sample:
+The screen samples:
+
+Small Grid                  | Large Grid
 --------------------------- | ---------------------------
-![sample](pics/sample2.png) | ![sample](pics/sample1.png)
+![sample](pics/sample3.png) | ![sample](pics/sample2.png)
 
 

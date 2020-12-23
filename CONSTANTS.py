@@ -60,9 +60,9 @@ logging.basicConfig(format=_format, level=logging.INFO,
 # logging.getLogger().setLevel(logging.DEBUG)
 ADDING_TO_FILE_NAME = ''
 
-GRID_SIDE_SIZE = 50
-NUM_OF_AGENTS = 80
-NUM_OF_TARGETS = 20
+GRID_SIDE_SIZE = 5
+NUM_OF_AGENTS = 8
+NUM_OF_TARGETS = 2
 NUMBER_OF_PROBLEMS = 10
 ITERATIONS_IN_BIG_LOOPS = 20
 ITERATIONS_IN_SMALL_LOOPS = 10
