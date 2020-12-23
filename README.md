@@ -9,7 +9,7 @@ of underlying dynamics of those kind of problems.
 
 The initial settings are in `CONCTANTS.py` file.
 
-The screen samples:
+## Screen Samples
 
 Small Grid                  | Large Grid
 --------------------------- | ---------------------------
