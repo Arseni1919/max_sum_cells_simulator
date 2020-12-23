@@ -10,7 +10,7 @@ of underlying dynamics of those kind of problems.
 The initial settings are in `CONCTANTS.py` file.
 
 The screen sample:
-
-![sample](pics/sample1.png)
+--------------------------- | ---------------------------
+![sample](pics/sample2.png) | ![sample](pics/sample1.png)
 
 

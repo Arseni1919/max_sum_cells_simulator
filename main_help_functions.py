@@ -96,8 +96,9 @@ def pickle_results_if(graphs, results_dict):
         algorithms = graphs.keys()
         for alg in algorithms:
             suffix_str = suffix_str + '__%s' % alg
+        suffix_str = suffix_str + '__%s' % ADDING_TO_FILE_NAME
         os.mkdir('data/%s' % suffix_str)
-        suffix_str = "data/%s/%s_file" % (suffix_str, ADDING_TO_FILE_NAME)
+        suffix_str = "data/%s/file" % suffix_str
         file_name = "%s.graf" % suffix_str
         # open the file for writing
         with open(file_name, 'wb') as fileObject:
@@ -228,6 +229,7 @@ def check_targets_apart(all_agents):
                 if distance(target1.get_pos(), target2.get_pos()) < 2*SR:
                     return False
     return True
+
 
 def create_problem():
     good = False
