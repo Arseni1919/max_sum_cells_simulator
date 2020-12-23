@@ -14,7 +14,7 @@ class FunctionNode:
         self.message_box = {}
         if LOAD_PREVIOUS_POSITIONS:
             # self.rund = load_weight_of(self.name, file_name)['rund']
-            self.pos = load_weight_of(self.name, file_name)['pos']
+            self.pos = load_weight_of(self.name, FILE_NAME)['pos']
         else:
             self.rund = get_random_num()
         self.cells_in_range = []

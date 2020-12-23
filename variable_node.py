@@ -12,12 +12,13 @@ class VariableNode:
         self.prev_pos = pos
         self.pos = pos
         self.future_pos = pos
+        self.delay = 0
         self.neighbours = []
         self.targets_nearby = []
         self.message_box = {}
         if LOAD_PREVIOUS_POSITIONS:
             # self.rund = load_weight_of(self.name, file_name)['rund']
-            self.pos = load_weight_of(self.name, file_name)['pos']
+            self.pos = load_weight_of(self.name, FILE_NAME)['pos']
         else:
             self.rund = get_random_num()
 
@@ -50,4 +51,11 @@ class VariableNode:
 
     def update_rund(self):
         self.rund = get_random_num()
+
+    def update_delay(self):
+        if self.delay == 0:
+            self.delay = DELAY_OF_COLLISION
+        else:
+            self.delay -= 1
+
 

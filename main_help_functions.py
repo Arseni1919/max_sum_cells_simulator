@@ -40,10 +40,22 @@ def create_results_dict():
     # graphs[algorithm][iteration][problem] = convergence
     results_dict = {}
     graphs = {}
-    for alg_name, params in algorithms_to_check:
+    for alg_name, params in ALGORITHMS_TO_CHECK:
         results_dict[alg_name] = {'col': []}
         graphs[alg_name] = np.zeros((ITERATIONS, NUMBER_OF_PROBLEMS))
     return results_dict, graphs
+
+
+def reset_delay(all_agents):
+    for agent in all_agents:
+        if 'robot' in agent.name:
+            agent.delay = 0
+
+
+def reset_agents(all_sprites, all_agents, screen):
+    go_back_to_initial_positions(all_sprites, all_agents, screen)
+    reset_delay(all_agents)
+
 
 def go_back_to_initial_positions(all_sprites, all_agents, screen):
     for sprite in all_sprites:
@@ -52,6 +64,7 @@ def go_back_to_initial_positions(all_sprites, all_agents, screen):
                 sprite.set_pos(agent.initial_pos)
                 agent.pos = agent.initial_pos
                 agent.prev_pos = agent.initial_pos
+
     first_screen_blit(screen, all_sprites)
 
 
@@ -63,6 +76,7 @@ def first_screen_blit(screen, all_sprites):
     # Update the display
     pygame.display.flip()
     time.sleep(1)
+
 
 def close_pygame(finish_sound):
     finish_sound.play()
@@ -77,19 +91,20 @@ def close_pygame(finish_sound):
 
 
 def pickle_results_if(graphs, results_dict):
-    if need_to_save_results:
-        timestr = time.strftime("%d.%m.%Y-%H:%M:%S")
+    if NEED_TO_SAVE_RESULTS:
+        suffix_str = time.strftime("%d.%m.%Y-%H:%M:%S")
         algorithms = graphs.keys()
         for alg in algorithms:
-            timestr = timestr + '__%s' % alg
-        timestr = "data/%s_%s_file" % (timestr, adding_to_file_name)
-        file_name = "%s.graf" % timestr
+            suffix_str = suffix_str + '__%s' % alg
+        os.mkdir('data/%s' % suffix_str)
+        suffix_str = "data/%s/%s_file" % (suffix_str, ADDING_TO_FILE_NAME)
+        file_name = "%s.graf" % suffix_str
         # open the file for writing
         with open(file_name, 'wb') as fileObject:
             pickle.dump(graphs, fileObject)
 
-        # file_name = "data/%s_%s_file.resu" % (timestr, adding_to_file_name)
-        file_name = "%s.resu" % timestr
+        # file_name = "data/%s_%s_file.resu" % (suffix_str, adding_to_file_name)
+        file_name = "%s.resu" % suffix_str
         with open(file_name, 'wb') as fileObject:
             pickle.dump(results_dict, fileObject)
 
@@ -97,19 +112,28 @@ def pickle_results_if(graphs, results_dict):
         for alg_name, inner_dict in results_dict.items():
             collisions[alg_name] = sum(inner_dict["col"])/2
 
-        # file_name = "data/%s_%s_file.info" % (timestr, adding_to_file_name)
-        file_name = "%s.info" % timestr
+        # file_name = "data/%s_%s_file.info" % (suffix_str, adding_to_file_name)
+        file_name = "%s.info" % suffix_str
         # open the file for writing
         with open(file_name, 'wb') as fileObject:
-            info = {'graphs': list(graphs.keys()), 'collisions': collisions, 'grid_size': GRID_SIDE_SIZE,
-                    'num_of_targets': num_of_targets,
-                    'num_of_agents': num_of_agents, 'target_range': REQ, 'MR': MR, 'SR': SR, 'cred': CRED,
-                    'MAX_ITERATIONS': ITERATIONS, 'NUMBER_OF_PROBLEMS': NUMBER_OF_PROBLEMS}
+            info = {'graphs': list(graphs.keys()),
+                    'collisions': collisions,
+                    'EXECUTE_DELAY': EXECUTE_DELAY,
+                    'DELAY_OF_COLLISION': DELAY_OF_COLLISION,
+                    'grid_size': GRID_SIDE_SIZE,
+                    'num_of_targets': NUM_OF_TARGETS,
+                    'num_of_agents': NUM_OF_AGENTS,
+                    'target_range': REQ,
+                    'MR': MR,
+                    'SR': SR,
+                    'cred': CRED,
+                    'MAX_ITERATIONS': ITERATIONS,
+                    'NUMBER_OF_PROBLEMS': NUMBER_OF_PROBLEMS}
             pickle.dump(info, fileObject)
 
 
 def plot_results_if(graphs):
-    if need_to_plot_results:
+    if NEED_TO_PLOT_RESULTS:
         # print_t_test_table(graphs)
         # plt.style.use('fivethirtyeight')
         plt.style.use('bmh')
@@ -149,7 +173,7 @@ def plot_results_if(graphs):
             #     ax.fill_between(iterations, avr - t_value * std, avr + t_value * std,
             #                     alpha=0.2, antialiased=True)
 
-            if need_to_plot_min_max:
+            if NEED_TO_PLOT_MIN_MAX:
                 # confidence interval
                 ax.fill_between(iterations, np.min(matrix, 1), np.max(matrix, 1),
                                 alpha=0.2, antialiased=True)
@@ -226,12 +250,12 @@ def init_problem():
 def reset_all(all_sprites, all_agents):
     if LOAD_PREVIOUS_POSITIONS:
         for sprite in all_sprites:
-            sprite.pos = load_weight_of(sprite.name, file_name)['pos']
+            sprite.pos = load_weight_of(sprite.name, FILE_NAME)['pos']
         for agent in all_agents:
             # agent.rund = load_weight_of(agent.name, file_name)['rund']
-            agent.pos = load_weight_of(agent.name, file_name)['pos']
-            agent.prev_pos = load_weight_of(agent.name, file_name)['pos']
-            agent.initial_pos = load_weight_of(agent.name, file_name)['pos']
+            agent.pos = load_weight_of(agent.name, FILE_NAME)['pos']
+            agent.prev_pos = load_weight_of(agent.name, FILE_NAME)['pos']
+            agent.initial_pos = load_weight_of(agent.name, FILE_NAME)['pos']
 
 # Create Field
 def create_field(all_sprites, cells):
@@ -341,15 +365,15 @@ def create_all_sprites():
     print('height/weight: ', math.sqrt(len(cells.sprites())), end='')
 
     # Create targets on field
-    create_targets(cell_size, all_sprites, targets, cells, target_rate, REQ, use_rate, num_of_targets)
+    create_targets(cell_size, all_sprites, targets, cells, target_rate, REQ, use_rate, NUM_OF_TARGETS)
 
     # Create agents on field
     create_robots(cell_size, all_sprites, agents, cells,
-                  num_of_agents=num_of_agents,
+                  num_of_agents=NUM_OF_AGENTS,
                   MR=MR,
                   SR=SR,
                   cred=CRED,
-                  show_ranges=show_ranges,
+                  show_ranges=SHOW_RANGES,
                   speed=speed)
     # add_cell_and_target_tuples(agents, cells, targets)
     create_dictionary(agents, targets)

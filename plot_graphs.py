@@ -4,13 +4,10 @@ from main_help_functions import *
 # ---------------------------
 # ------INPUT SETTINGS-------
 # ---------------------------
-graph_file_name = "14.12.2020-17:31:03__random_walk__harels_algorithm__max_sum_cells__file.resu"
-# graph_file_name = "14.12.2020-17:53:39__random_walk__harels_algorithm__max_sum_cells__file.info"
+graph_file_name = "data/23.12.2020-12:37:01__random_walk__harels_algorithm__max_sum_cells/23.12.2020-12:37:01__random_walk__harels_algorithm__max_sum_cells__file.graf"
 # need_to_plot_variance = False
 # need_to_plot_min_max = False
 # ---------------------------
-
-graph_file_name = 'data/%s' % graph_file_name
 
 graph_file_name = graph_file_name[:-5] + '.info'
 with open(graph_file_name, 'rb') as fileObject:

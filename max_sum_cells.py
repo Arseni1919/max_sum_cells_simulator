@@ -18,8 +18,8 @@ def max_sum_cells_alg(params, all_agents):
 
     assignments = get_choices(all_agents, ITERATIONS_IN_SMALL_LOOPS - 1)
     new_positions = get_new_positions(assignments, robots_dict, cells_dict)
-    collisions = calc_collisions(new_positions)
     new_positions = analyze_and_correct_new_positions(new_positions, robots_dict, cells_dict, choice_list)
+    collisions = calc_collisions(new_positions)
     return new_positions, collisions
 
 
@@ -33,12 +33,12 @@ def get_new_positions(assignments, robots_dict, cells_dict):
     return new_positions
 
 
-def return_to_prev_pos(robots_dict):
-    new_positions = {}
-    for robot_name, robot in robots_dict.items():
-        robot.pos = robot.prev_pos
-        new_positions[robot.name] = robot.pos
-    return new_positions
+# def return_to_prev_pos(robots_dict):
+#     new_positions = {}
+#     for robot_name, robot in robots_dict.items():
+#         robot.pos = robot.prev_pos
+#         new_positions[robot.name] = robot.pos
+#     return new_positions
 
 
 def get_choices(all_agents, iteration):
@@ -87,26 +87,43 @@ def update_domains_and_neighbours_and_runds(all_agents):
     robots, targets, cells, robots_dict, cells_dict = separate_all_agents(all_agents)
     clear_domains_and_neighbours_update_runds_update_cells(all_agents, robots, targets, cells)
     set_targets_funcs(targets, cells)
+    set_FMR_for_targets(targets, robots)
     set_targets_vs_robots_neighbours(targets, robots)
     set_robots_domains_and_neighbours_for_robots_and_cells(robots, cells)
-    save_weights(all_agents, file_name)
+    save_weights(all_agents, FILE_NAME)
     return robots_dict, cells_dict
 
 
-def clear_domains_and_neighbours_update_runds_update_cells(all_agents, robots, targets, cells):
-    for agent in all_agents:
-        agent.neighbours = []
-        if LOAD_PREVIOUS_WEIGHTS:
-            agent.rund = load_weight_of(agent.name, file_name)['rund']
-        else:
-            agent.update_rund()
-    for robot in robots:
-        robot.domain = []
-        # robot.prev_pos = robot.pos
-    for cell in cells:
-        cell.occupied = False
-    for target in targets:
-        target.cells_in_range = []
+# def set_FMR_for_targets(targets, robots):
+#     create_target_neighbours_for_robots(targets, robots)
+#     for target in targets:
+#         target.fmr_set = select_FMR_nei(target, robots)
+#
+#
+# def create_target_neighbours_for_robots(targets, robots):
+#     for robot in robots:
+#         for target in targets:
+#             dist = distance(robot.get_pos(), target.get_pos())
+#             if dist <= SR + MR:
+#                 robot.targets_nearby.append(target)
+
+
+# def clear_domains_and_neighbours_update_runds_update_cells(all_agents, robots, targets, cells):
+#     for agent in all_agents:
+#         agent.neighbours = []
+#         if LOAD_PREVIOUS_WEIGHTS:
+#             agent.rund = load_weight_of(agent.name, file_name)['rund']
+#         else:
+#             agent.update_rund()
+#     for robot in robots:
+#         robot.domain = []
+#         robot.targets_nearby = []
+#         # robot.prev_pos = robot.pos
+#     for cell in cells:
+#         cell.occupied = False
+#     for target in targets:
+#         target.cells_in_range = []
+#         target.fmr_set = []
 
 
 def set_targets_vs_robots_neighbours(targets, robots):
@@ -114,29 +131,32 @@ def set_targets_vs_robots_neighbours(targets, robots):
         for robot in robots:
             dist = distance(target.get_pos(), robot.get_pos())
             if dist < (SR + MR):
-                target.neighbours.append(robot)
-                robot.neighbours.append(target)
+                # target.neighbours.append(robot)
+                # robot.neighbours.append(target)
+                if robot in target.fmr_set:
+                    target.neighbours.append(robot)
+                    robot.neighbours.append(target)
 
 
-def set_robots_domains_and_neighbours_for_robots_and_cells(robots, cells):
-    mark_occupied_cells_by_robots(robots, cells)
-    for robot in robots:
-        for cell in cells:
-            dist = distance(robot.get_pos(), cell.get_pos())
-            if dist <= DISTANCE_BETWEEN_CELLS:
-                if dist == 0 or not cell.occupied:
-                    robot.domain.append(cell.num)
-                    robot.neighbours.append(cell)
-                    cell.neighbours.append(robot)
-
-
-def mark_occupied_cells_by_robots(robots, cells):
-    for robot in robots:
-        for cell in cells:
-            dist = distance(robot.get_pos(), cell.get_pos())
-            if dist == 0:
-                cell.occupied = True
-                break
+# def set_robots_domains_and_neighbours_for_robots_and_cells(robots, cells):
+#     mark_occupied_cells_by_robots(robots, cells)
+#     for robot in robots:
+#         for cell in cells:
+#             dist = distance(robot.get_pos(), cell.get_pos())
+#             if dist <= DISTANCE_BETWEEN_CELLS:
+#                 if dist == 0 or not cell.occupied:
+#                     robot.domain.append(cell.num)
+#                     robot.neighbours.append(cell)
+#                     cell.neighbours.append(robot)
+#
+#
+# def mark_occupied_cells_by_robots(robots, cells):
+#     for robot in robots:
+#         for cell in cells:
+#             dist = distance(robot.get_pos(), cell.get_pos())
+#             if dist == 0:
+#                 cell.occupied = True
+#                 break
 
 
 def set_targets_funcs(targets, cells):
@@ -150,17 +170,17 @@ def set_targets_funcs(targets, cells):
         target.func = create_func_target(cells_near_me=target.cells_in_range)
 
 
-def analyze_and_correct_new_positions(new_positions, robots_dict, cells_dict, choice_list):
-    for robot_name_1, pos_1 in new_positions.items():
-        for robot_name_2, pos_2 in new_positions.items():
-            if robot_name_1 != robot_name_2 and distance(pos_1, pos_2) == 0:
-                dict_to_print = {robot_name_1: robots_dict[robot_name_1],
-                                 robot_name_2: robots_dict[robot_name_2]}
-                # print_runds(dict_to_print, cells_dict)
-                # graph_choice_list(choice_list)
-                print(colored('\n[ERROR]: Returning to prev pos!', 'yellow'))
-                return return_to_prev_pos(robots_dict)
-    return new_positions
+# def analyze_and_correct_new_positions(new_positions, robots_dict, cells_dict, choice_list):
+#     for robot_name_1, pos_1 in new_positions.items():
+#         for robot_name_2, pos_2 in new_positions.items():
+#             if robot_name_1 != robot_name_2 and distance(pos_1, pos_2) == 0:
+#                 dict_to_print = {robot_name_1: robots_dict[robot_name_1],
+#                                  robot_name_2: robots_dict[robot_name_2]}
+#                 # print_runds(dict_to_print, cells_dict)
+#                 # graph_choice_list(choice_list)
+#                 print(colored('\n[ERROR]: Returning to prev pos!', 'yellow'))
+#                 return return_to_prev_pos(robots_dict)
+#     return new_positions
 
 
 def print_runds(robots_dict, cells_dict):

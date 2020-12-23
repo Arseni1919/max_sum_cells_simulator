@@ -8,36 +8,16 @@ def random_walk(params, all_agents):
     set_robots_domains_and_neighbours_for_robots_and_cells(robots, cells)
 
     new_random_positions = get_new_random_positions(robots_dict, cells_dict)
-
-    return new_random_positions, calc_collisions(new_random_positions)
-
-
-def set_robots_domains_and_neighbours_for_robots_and_cells(robots, cells):
-    mark_occupied_cells_by_robots(robots, cells)
-    for robot in robots:
-        for cell in cells:
-            dist = distance(robot.get_pos(), cell.get_pos())
-            if dist <= DISTANCE_BETWEEN_CELLS:
-                if dist == 0 or not cell.occupied:
-                    robot.domain.append(cell.num)
-                    robot.neighbours.append(cell)
-                    cell.neighbours.append(robot)
-
-
-def mark_occupied_cells_by_robots(robots, cells):
-    for robot in robots:
-        for cell in cells:
-            dist = distance(robot.get_pos(), cell.get_pos())
-            if dist == 0:
-                cell.occupied = True
-                break
+    new_positions = analyze_and_correct_new_positions(new_random_positions, robots_dict)
+    collisions = calc_collisions(new_random_positions)
+    return new_positions, collisions
 
 
 def clear_domains_and_neighbours_update_runds_update_cells(all_agents, robots, targets, cells):
     for agent in all_agents:
         agent.neighbours = []
         if LOAD_PREVIOUS_WEIGHTS:
-            agent.rund = load_weight_of(agent.name, file_name)['rund']
+            agent.rund = load_weight_of(agent.name, FILE_NAME)['rund']
         else:
             agent.update_rund()
     for robot in robots:

@@ -15,14 +15,16 @@ def main():
         all_sprites, all_agents = create_problem()
         time.sleep(2)
 
-        for alg_num, (alg_name, params) in enumerate(algorithms_to_check):
+        for alg_num, (alg_name, params) in enumerate(ALGORITHMS_TO_CHECK):
             algorithm = get_the_algorithm(alg_name)
-            go_back_to_initial_positions(all_sprites, all_agents, screen)
+            reset_agents(all_sprites, all_agents, screen)
 
             for i in range(ITERATIONS):
                 tracker.update(problem, alg_num, i)
                 tracker.print_progress()
+
                 new_positions, collisions = algorithm(params=params, all_agents=all_agents)
+
                 blit_pygame(screen, all_sprites, new_positions)
 
                 update_statistics(results_dict, graphs, all_agents, collisions,

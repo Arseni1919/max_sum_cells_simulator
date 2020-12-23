@@ -7,7 +7,7 @@ class Tracker:
         self.curr_alg_num = 0
         self.curr_bigger_iteration = 0
         self.curr_smaller_iteration = 0
-        self.final = NUMBER_OF_PROBLEMS * len(algorithms_to_check)
+        self.final = NUMBER_OF_PROBLEMS * len(ALGORITHMS_TO_CHECK)
         self.done = 5
         self.biggest = 20
 
@@ -19,11 +19,11 @@ class Tracker:
     def print_progress(self):
         self.done = int(
             self.biggest * (
-                    (self.curr_problem * len(algorithms_to_check) + self.curr_alg_num + 1)
+                    (self.curr_problem * len(ALGORITHMS_TO_CHECK) + self.curr_alg_num + 1)
                     / self.final)
         )
         print(colored(f'\rProblem: ({self.curr_problem + 1}/{NUMBER_OF_PROBLEMS}), '
-                      f'Alg: ({self.curr_alg_num + 1}/{len(algorithms_to_check)}), '
+                      f'Alg: ({self.curr_alg_num + 1}/{len(ALGORITHMS_TO_CHECK)}), '
                       f'Iter B: ({self.curr_bigger_iteration + 1}/{ITERATIONS}), '
                       f'Iter S: ({self.curr_smaller_iteration}/{ITERATIONS_IN_SMALL_LOOPS}), '
                       f'Progress: [{"#" * self.done}{"." * (self.biggest - self.done)}]', 'green'), end='')

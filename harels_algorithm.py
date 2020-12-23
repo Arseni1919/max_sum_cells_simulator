@@ -19,6 +19,7 @@ def harels_algorithm(params, all_agents):
 
     assignments = get_choices(all_agents, ITERATIONS_IN_SMALL_LOOPS - 1)
     new_positions = get_new_positions(assignments, robots_dict, cells_dict)
+    new_positions = analyze_and_correct_new_positions(new_positions, robots_dict)
     collisions = calc_collisions(new_positions)
     return new_positions, collisions
 
@@ -80,17 +81,10 @@ def set_robots_domains(robots, cells):
         for cell in cells:
             dist = distance(robot.get_pos(), cell.get_pos())
             if dist <= DISTANCE_BETWEEN_CELLS:
-                if dist == 0 or not cell.occupied:
+                # if dist == 0 or not cell.occupied:
+                #     robot.domain.append(cell.num)
+                if dist == 0:
                     robot.domain.append(cell.num)
-
-
-def mark_occupied_cells_by_robots(robots, cells):
-    for robot in robots:
-        for cell in cells:
-            dist = distance(robot.get_pos(), cell.get_pos())
-            if dist == 0:
-                cell.occupied = True
-                break
 
 
 def set_targets_vs_robots_neighbours(targets, robots):
@@ -114,82 +108,82 @@ def set_targets_funcs(targets, cells):
         target.func = create_func_target(cells_near_me=target.cells_in_range)
 
 
-def clear_domains_and_neighbours_update_runds_update_cells(all_agents, robots, targets, cells):
-    for agent in all_agents:
-        agent.neighbours = []
-        if LOAD_PREVIOUS_WEIGHTS:
-            agent.rund = load_weight_of(agent.name, file_name)['rund']
-        else:
-            agent.update_rund()
-    for robot in robots:
-        robot.domain = []
-        robot.targets_nearby = []
-        # robot.prev_pos = robot.pos
-    for cell in cells:
-        cell.occupied = False
-    for target in targets:
-        target.cells_in_range = []
-        target.fmr_set = []
+# def clear_domains_and_neighbours_update_runds_update_cells(all_agents, robots, targets, cells):
+#     for agent in all_agents:
+#         agent.neighbours = []
+#         if LOAD_PREVIOUS_WEIGHTS:
+#             agent.rund = load_weight_of(agent.name, file_name)['rund']
+#         else:
+#             agent.update_rund()
+#     for robot in robots:
+#         robot.domain = []
+#         robot.targets_nearby = []
+#         # robot.prev_pos = robot.pos
+#     for cell in cells:
+#         cell.occupied = False
+#     for target in targets:
+#         target.cells_in_range = []
+#         target.fmr_set = []
 
 
-def set_FMR_for_targets(targets, robots):
-    create_target_neighbours_for_robots(targets, robots)
-    for target in targets:
-        target.fmr_set = select_FMR_nei(target, robots)
-        # target.neighbours = target.fmr_set
+# def set_FMR_for_targets(targets, robots):
+#     create_target_neighbours_for_robots(targets, robots)
+#     for target in targets:
+#         target.fmr_set = select_FMR_nei(target, robots)
+#         # target.neighbours = target.fmr_set
+#
+#
+# def create_target_neighbours_for_robots(targets, robots):
+#     for robot in robots:
+#         for target in targets:
+#             dist = distance(robot.get_pos(), target.get_pos())
+#             if dist <= SR + MR:
+#                 robot.targets_nearby.append(target)
 
 
-def create_target_neighbours_for_robots(targets, robots):
-    for robot in robots:
-        for target in targets:
-            dist = distance(robot.get_pos(), target.get_pos())
-            if dist <= SR + MR:
-                robot.targets_nearby.append(target)
-
-
-def select_FMR_nei(target, robots):
-    '''
-    Assumptions: homogeneous agents and targets, in Fsum mode
-    '''
-    r_value = int(REQ/CRED + 1)
-
-    total_set = []
-    SR_set = []
-    rest_set = []
-
-    for robot in robots:
-        dist = distance(robot.get_pos(), target.get_pos())
-
-        if dist <= SR + MR:
-            total_set.append(robot)
-            if dist <= SR:
-                SR_set.append(robot)
-            else:
-                rest_set.append(robot)
-
-    while len(total_set) > r_value:
-        max_degree, min_degree = 0, 0
-        for nei in total_set:
-            degree = len(nei.targets_nearby)
-            if nei in rest_set:
-                max_degree = degree if max_degree < degree else max_degree
-            if nei in SR_set:
-                min_degree = degree if min_degree > degree else min_degree
-
-        if len(rest_set) > 0:
-            selected_to_remove = rest_set[0]
-            for nei in rest_set:
-                if len(nei.targets_nearby) == max_degree:
-                    selected_to_remove = nei
-                    break
-            total_set.remove(selected_to_remove)
-            rest_set.remove(selected_to_remove)
-        else:
-            selected_to_remove = SR_set[0]
-            for nei in SR_set:
-                if len(nei.targets_nearby) == min_degree:
-                    selected_to_remove = nei
-                    break
-            total_set.remove(selected_to_remove)
-            SR_set.remove(selected_to_remove)
-    return total_set
+# def select_FMR_nei(target, robots):
+#     '''
+#     Assumptions: homogeneous agents and targets, in Fsum mode
+#     '''
+#     r_value = int(REQ/CRED + 1)
+#
+#     total_set = []
+#     SR_set = []
+#     rest_set = []
+#
+#     for robot in robots:
+#         dist = distance(robot.get_pos(), target.get_pos())
+#
+#         if dist <= SR + MR:
+#             total_set.append(robot)
+#             if dist <= SR:
+#                 SR_set.append(robot)
+#             else:
+#                 rest_set.append(robot)
+#
+#     while len(total_set) > r_value:
+#         max_degree, min_degree = 0, 0
+#         for nei in total_set:
+#             degree = len(nei.targets_nearby)
+#             if nei in rest_set:
+#                 max_degree = degree if max_degree < degree else max_degree
+#             if nei in SR_set:
+#                 min_degree = degree if min_degree > degree else min_degree
+#
+#         if len(rest_set) > 0:
+#             selected_to_remove = rest_set[0]
+#             for nei in rest_set:
+#                 if len(nei.targets_nearby) == max_degree:
+#                     selected_to_remove = nei
+#                     break
+#             total_set.remove(selected_to_remove)
+#             rest_set.remove(selected_to_remove)
+#         else:
+#             selected_to_remove = SR_set[0]
+#             for nei in SR_set:
+#                 if len(nei.targets_nearby) == min_degree:
+#                     selected_to_remove = nei
+#                     break
+#             total_set.remove(selected_to_remove)
+#             SR_set.remove(selected_to_remove)
+#     return total_set

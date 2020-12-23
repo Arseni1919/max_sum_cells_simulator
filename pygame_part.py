@@ -21,4 +21,5 @@ def blit_pygame(screen, all_sprites, new_positions):
         # Update the display
         pygame.display.flip()
         time.sleep(0.5)
+        # time.sleep(1)
         all_arrived = True

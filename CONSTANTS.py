@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 import random
 import logging
 import threading
@@ -24,31 +25,6 @@ from collections import namedtuple
 import operator
 from prettytable import PrettyTable
 from termcolor import colored
-
-# from table_ploter import TablePlotter
-
-# CellTuple = namedtuple('CellTuple', ['pos',])
-# TargetTuple = namedtuple('TargetTuple', ['pos', 'req', 'name', 'num'])
-# AgentTuple = namedtuple('AgentTuple', ['pos', 'num_of_robot_nei', 'num_of_target_nei', 'name', 'num', 'cred', 'SR', 'MR'])
-# MessageType = namedtuple('MessageType', ['from_var_to_func',
-#                                          'from_var_to_func_only_pos',
-#                                          'from_var_to_func_dir',
-#                                          'from_func_pos_collisions_to_var',
-#                                          'from_func_dir_collisions_to_var',
-#                                          'from_func_target_to_var'])
-# message_types = MessageType(from_var_to_func='from_var_to_func',
-#                             from_var_to_func_only_pos='from_var_to_func_only_pos',
-#                             from_var_to_func_dir='from_var_to_func_dir',
-#                             from_func_pos_collisions_to_var='from_func_pos_collisions_to_var',
-#                             from_func_dir_collisions_to_var='from_func_dir_collisions_to_var',
-#                             from_func_target_to_var='from_func_target_to_var')
-# from_func_to_var_types = (message_types.from_func_pos_collisions_to_var, message_types.from_func_target_to_var,
-#                           message_types.from_func_dir_collisions_to_var)
-# dictionary_message_types = (message_types.from_func_pos_collisions_to_var, message_types.from_func_target_to_var,
-#                             message_types.from_func_dir_collisions_to_var, message_types.from_var_to_func,
-#                             message_types.from_var_to_func_dir)
-# TypesOfRequirement = namedtuple('TypesOfRequirement', ['copy', 'copy_var_dicts', 'copy_func_dicts'])
-# copy_types = TypesOfRequirement('copy', 'copy_var_dicts', 'copy_func_dicts')
 
 # Import pygame.locals for easier access to key coordinates
 # Updated to conform to flake8 and black standards
@@ -90,24 +66,26 @@ logging.basicConfig(format=_format, level=logging.INFO,
                     datefmt="%H:%M:%S")
 # logging.getLogger().setLevel(logging.DEBUG)
 
-GRID_SIDE_SIZE = 15
+GRID_SIDE_SIZE = 10
 CELL_SIZE['CUSTOM'] = int(SCREEN_HEIGHT / GRID_SIDE_SIZE - 2)
 cell_size = CELL_SIZE['CUSTOM']
 PADDING = 2
 DISTANCE_BETWEEN_CELLS = CELL_SIZE['CUSTOM'] + PADDING
 # ---
-show_ranges = True
-# show_ranges = False
-# need_to_save_results = False
-need_to_save_results = True
-adding_to_file_name = ''
-need_to_plot_results = True
-need_to_plot_variance = False
-need_to_plot_min_max = True
+# SHOW_RANGES = True
+SHOW_RANGES = False
+# NEED_TO_SAVE_RESULTS = False
+NEED_TO_SAVE_RESULTS = True
+ADDING_TO_FILE_NAME = ''
+NEED_TO_PLOT_RESULTS = True
+NEED_TO_PLOT_VARIANCE = False
+NEED_TO_PLOT_MIN_MAX = True
+
 alpha = 0.025  # for confidence intervals in graphs
-speed = 5  # bigger -slower, smaller - faster. don't ask why
-num_of_agents = 10
-num_of_targets = 5
+speed = 5  # bigger - slower, smaller - faster. don't ask why
+
+NUM_OF_AGENTS = 30
+NUM_OF_TARGETS = 7
 use_rate = False  # if False - it uses the num_of_targets variable, but still also uses target_rate
 target_rate = 0.055
 
@@ -115,15 +93,20 @@ REQ = 120
 MR = 1.5 * cell_size
 SR = 2.5 * cell_size
 CRED = 30
-MINUS_INF = -500000
-ITERATIONS = 20
-ITERATIONS_IN_SMALL_LOOPS = 20
-NUMBER_OF_PROBLEMS = 10
+MINUS_INF = -50000
+ITERATIONS = 5
+ITERATIONS_IN_SMALL_LOOPS = 10
+NUMBER_OF_PROBLEMS = 2
+DELAY_OF_COLLISION = 8
+EXECUTE_DELAY = True
+# EXECUTE_DELAY = False
 
-algorithms_to_check = [
+ALGORITHMS_TO_CHECK = [
     ('random_walk', {}),
     ('harels_algorithm', {}),
     ('max_sum_cells', {}),
+
+
 ]
 
 from_c_to_r = (2, 1)
@@ -135,7 +118,7 @@ TARGETS_APART = False
 
 # -------------------------------------------------- #
 
-file_name = "last_weights.txt"
+FILE_NAME = "last_weights.txt"
 # LOAD_PREVIOUS_POSITIONS = True
 LOAD_PREVIOUS_POSITIONS = False
 # LOAD_PREVIOUS_WEIGHTS = True
