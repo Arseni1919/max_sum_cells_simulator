@@ -119,7 +119,7 @@ def select_FMR_nei(target, robots):
     '''
     Assumptions: homogeneous agents and targets, in Fsum mode
     '''
-    r_value = int(REQ/CRED + 1)
+    r_value = int(REQ/CRED)
 
     total_set = []
     SR_set = []

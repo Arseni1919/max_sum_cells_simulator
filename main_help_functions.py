@@ -152,19 +152,20 @@ def plot_results_if(graphs):
 
         fig, ax = plt.subplots()
 
-        for algorithm in graphs.keys():
+        for alg_name in graphs.keys():
 
             line_index = 0 if line_index == len(lines) else line_index
             marker_index = 0 if marker_index == len(markers) else marker_index
 
-            matrix = graphs[algorithm]
+            matrix = graphs[alg_name]
             avr = np.average(matrix, 1)
+            print('%s last iteration: %s' % (alg_name, avr[-1]))
             std = np.std(matrix, 1)
 
             line = lines[line_index]
             marker = markers[marker_index]
 
-            ax.plot(iterations, avr, '%s%s' % (marker, line), label=algorithm)
+            ax.plot(iterations, avr, '%s%s' % (marker, line), label=alg_name)
 
             line_index += 1
             marker_index += 1
