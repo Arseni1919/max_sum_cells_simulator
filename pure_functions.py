@@ -194,7 +194,7 @@ def return_to_prev_pos(robots_dict):
 
 def analyze_and_correct_new_positions(new_positions: dict, robots_dict, cells_dict=None, choice_list=None):
     if EXECUTE_DELAY:
-        print()
+        # print()
         for robot_name, robot in robots_dict.items():
             if robot.delay > 0:
                 robot.pos = robot.prev_pos
@@ -209,8 +209,7 @@ def analyze_and_correct_new_positions(new_positions: dict, robots_dict, cells_di
                     # graph_choice_list(choice_list)
                     d_robot = robots_dict[robot_name_1]
                     d_robot.update_delay()
-                    # new_positions[d_robot.name] = d_robot.pos
-                    print(colored('\r[ERROR]: Robot %s delaying on the same pos!' % d_robot.num, 'yellow'), end='')
-                    # return return_to_prev_pos(robots_dict)
+                    # print(colored('\r[ERROR]: Robot %s delaying on the same pos!' % d_robot.num, 'yellow'), end='')
+
     return new_positions
 

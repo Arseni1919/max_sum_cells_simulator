@@ -60,19 +60,19 @@ logging.basicConfig(format=_format, level=logging.INFO,
 # logging.getLogger().setLevel(logging.DEBUG)
 ADDING_TO_FILE_NAME = ''
 
-GRID_SIDE_SIZE = 5
-NUM_OF_AGENTS = 8
-NUM_OF_TARGETS = 2
+GRID_SIDE_SIZE = 40
+NUM_OF_AGENTS = 40
+NUM_OF_TARGETS = 20
 NUMBER_OF_PROBLEMS = 10
-ITERATIONS_IN_BIG_LOOPS = 20
+ITERATIONS_IN_BIG_LOOPS = 70
 ITERATIONS_IN_SMALL_LOOPS = 10
-DELAY_OF_COLLISION = 18
+DELAY_OF_COLLISION = 30
 EXECUTE_DELAY = True
 # EXECUTE_DELAY = False
 # TARGETS_APART = True
 TARGETS_APART = False
 ADDING_TO_FILE_NAME += '_targets_apart_' if TARGETS_APART else ''
-ADDING_TO_FILE_NAME += '_delay_%s_' % DELAY_OF_COLLISION if EXECUTE_DELAY else ''
+ADDING_TO_FILE_NAME += '_delay_%s' % DELAY_OF_COLLISION if EXECUTE_DELAY else ''
 
 ALGORITHMS_TO_CHECK = [
     ('random_walk', {}),
@@ -96,13 +96,13 @@ from_c_to_r = (2, 1)
 FLATTEN = True
 
 REQ = 120
-MR = 2.5 * cell_size
-SR = 2.5 * cell_size
+MR = 1.5 * cell_size
+SR = 1.5 * cell_size
 CRED = 30
 
 # -------------------------------------------------- #
-# SHOW_RANGES = True
-SHOW_RANGES = False
+SHOW_RANGES = True
+# SHOW_RANGES = False
 # NEED_TO_SAVE_RESULTS = False
 NEED_TO_SAVE_RESULTS = True
 NEED_TO_PLOT_RESULTS = True

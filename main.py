@@ -16,6 +16,7 @@ def main():
         time.sleep(2)
 
         for alg_num, (alg_name, params) in enumerate(ALGORITHMS_TO_CHECK):
+            # print(f'\n{alg_name}')
             algorithm = get_the_algorithm(alg_name)
             reset_agents(all_sprites, all_agents, screen)
 
@@ -25,7 +26,7 @@ def main():
 
                 new_positions, collisions = algorithm(params=params, all_agents=all_agents)
 
-                blit_pygame(screen, all_sprites, new_positions)
+                # blit_pygame(screen, all_sprites, new_positions)
 
                 update_statistics(results_dict, graphs, all_agents, collisions,
                                   alg_name, iteration=i, problem=problem)
