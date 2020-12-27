@@ -1,4 +1,4 @@
-# Simulator of a type DCOP-MST problems where locations (cells) are also nodes
+# Simulator for DCOP-MST type of problems where locations (cells) are also nodes
 
 Distributed Constrained Optimization Problems 
 in context of Mobile Sensor Teams (DCOP_MST).
