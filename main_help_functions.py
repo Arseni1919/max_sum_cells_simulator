@@ -128,9 +128,24 @@ def pickle_results_if(graphs, results_dict):
                     'MR': MR,
                     'SR': SR,
                     'cred': CRED,
-                    'MAX_ITERATIONS': ITERATIONS_IN_BIG_LOOPS,
+                    'ITERATIONS_IN_BIG_LOOPS': ITERATIONS_IN_BIG_LOOPS,
+                    'ITERATIONS_IN_SMALL_LOOPS': ITERATIONS_IN_SMALL_LOOPS,
                     'NUMBER_OF_PROBLEMS': NUMBER_OF_PROBLEMS}
             pickle.dump(info, fileObject)
+
+
+def print_t_test(graphs):
+    length_of_name = min([len(x) for x in graphs.keys()])
+    for alg_name1 in graphs.keys():
+        matrix1 = graphs[alg_name1]
+        for alg_name2 in graphs.keys():
+            if alg_name1 != alg_name2:
+                matrix2 = graphs[alg_name2]
+                print('%s <-> %s \tP_value: %10.2f' %
+                      (alg_name1[:length_of_name],
+                       alg_name2[:length_of_name],
+                       ttest_ind(matrix1[-1], matrix2[-1])[1]))
+
 
 
 def plot_results_if(graphs):
@@ -170,10 +185,10 @@ def plot_results_if(graphs):
             line_index += 1
             marker_index += 1
 
-            # if need_to_plot_variance:
-            #     # confidence interval
-            #     ax.fill_between(iterations, avr - t_value * std, avr + t_value * std,
-            #                     alpha=0.2, antialiased=True)
+            if NEED_TO_PLOT_VARIANCE:
+                # confidence interval
+                ax.fill_between(iterations, avr - AMOUNT_OF_STD * std, avr + AMOUNT_OF_STD * std,
+                                alpha=0.2, antialiased=True)
 
             if NEED_TO_PLOT_MIN_MAX:
                 # confidence interval

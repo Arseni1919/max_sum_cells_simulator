@@ -4,7 +4,7 @@ from main_help_functions import *
 # ---------------------------
 # ------INPUT SETTINGS-------
 # ---------------------------
-graph_file_name = "data/26.12.2020-10:47:55__random_walk__harels_algorithm__max_sum_cells___delay_70/file.graf"
+graph_file_name = "data/26.12.2020-12:03:39__random_walk__harels_algorithm__max_sum_cells___delay_90/file.graf"
 # need_to_plot_variance = False
 # need_to_plot_min_max = False
 # ---------------------------
@@ -25,6 +25,7 @@ with open(graph_file_name, 'rb') as fileObject:
     graphs = pickle.load(fileObject)
     algorithms = list(graphs.keys())
     plot_results_if(graphs)
+    print_t_test(graphs)
 
 
 graph_file_name = graph_file_name[:-5] + '.resu'

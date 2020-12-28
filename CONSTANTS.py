@@ -14,7 +14,7 @@ import numpy as np
 import pickle
 import json
 import copy
-from scipy.stats import t
+from scipy.stats import ttest_ind
 from scipy import stats
 import itertools
 # from tqdm import tqdm
@@ -107,8 +107,9 @@ SHOW_RANGES = True
 # NEED_TO_SAVE_RESULTS = False
 NEED_TO_SAVE_RESULTS = True
 NEED_TO_PLOT_RESULTS = True
-NEED_TO_PLOT_VARIANCE = False
-NEED_TO_PLOT_MIN_MAX = True
+# NEED_TO_PLOT_VARIANCE, NEED_TO_PLOT_MIN_MAX = False, True
+NEED_TO_PLOT_VARIANCE, NEED_TO_PLOT_MIN_MAX = True, False
+AMOUNT_OF_STD = 1
 # -------------------------------------------------- #
 FILE_NAME = "last_weights.txt"
 # LOAD_PREVIOUS_POSITIONS = True
