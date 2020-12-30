@@ -13,5 +13,7 @@ for k,v in graphs.items():
     plt.plot(x, v, label=k)
 
 plt.xticks(x)
+plt.xlabel('Delay')
+plt.ylabel('Coverage')
 plt.legend()
 plt.show()

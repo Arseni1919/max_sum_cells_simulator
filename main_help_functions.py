@@ -93,10 +93,10 @@ def close_pygame(finish_sound):
 def pickle_results_if(graphs, results_dict):
     if NEED_TO_SAVE_RESULTS:
         suffix_str = time.strftime("%d.%m.%Y-%H:%M:%S")
-        algorithms = graphs.keys()
-        for alg in algorithms:
-            suffix_str = suffix_str + '__%s' % alg
-        suffix_str = suffix_str + '__%s' % ADDING_TO_FILE_NAME
+        # algorithms = graphs.keys()
+        # for alg in algorithms:
+        #     suffix_str = suffix_str + '__%s' % alg
+        suffix_str = suffix_str + '_%s' % ADDING_TO_FILE_NAME
         os.mkdir('data/%s' % suffix_str)
         suffix_str = "data/%s/file" % suffix_str
         file_name = "%s.graf" % suffix_str
@@ -121,9 +121,10 @@ def pickle_results_if(graphs, results_dict):
                     'collisions': collisions,
                     'EXECUTE_DELAY': EXECUTE_DELAY,
                     'DELAY_OF_COLLISION': DELAY_OF_COLLISION,
-                    'grid_size': GRID_SIDE_SIZE,
+                    'TARGETS_APART': TARGETS_APART,
+                    'grid_side_size': GRID_SIDE_SIZE,
                     'num_of_targets': NUM_OF_TARGETS,
-                    'num_of_agents': NUM_OF_AGENTS,
+                    'num_of_robots': NUM_OF_AGENTS,
                     'target_range': REQ,
                     'MR': MR,
                     'SR': SR,
