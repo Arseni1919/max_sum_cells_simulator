@@ -196,11 +196,12 @@ def plot_results_if(graphs):
                 ax.fill_between(iterations, np.min(matrix, 1), np.max(matrix, 1),
                                 alpha=0.2, antialiased=True)
 
-        ax.legend(loc='upper right')
-        ax.set_title('Results')
+        # ax.legend(loc='upper right')
+        ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+        # ax.set_title('Results')
         ax.set_ylabel('Coverage')
         ax.set_xlabel('Iterations')
-        ax.set_xticks(iterations)
+        # ax.set_xticks(iterations)
         # ax.set_xlim(xmin=iterations[0], xmax=iterations[-1])
         fig.tight_layout()
         plt.show()
@@ -217,10 +218,10 @@ def plot_collisions(results_dict):
         cumsum_list = np.cumsum(curr_col_list)
         ax.plot(iterations, cumsum_list, label=alg_name)
 
-    ax.legend(loc='upper right')
-    ax.set_title('Collisions')
-    ax.set_ylabel('Accumulated Collisions')
-    ax.set_xlabel('Accumulated Iterations')
+    ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    # ax.set_title('Collisions')
+    ax.set_ylabel('Collisions')
+    ax.set_xlabel('Iterations')
     # ax.set_xticks(iterations)
     # ax.set_xlim(xmin=iterations[0], xmax=iterations[-1])
     fig.tight_layout()
@@ -365,9 +366,9 @@ def create_robots(cell_size, all_sprites, agents, cells,
 
 def create_dictionary(agents, targets):
     for agent in agents.sprites():
-        OBJECTS[agent.get_name()] = agent
+        OBJECTS_SPRITES[agent.get_name()] = agent
     for target in targets.sprites():
-        OBJECTS[target.get_name()] = target
+        OBJECTS_SPRITES[target.get_name()] = target
 
 
 def create_all_sprites():
@@ -411,6 +412,12 @@ def create_all_agents(all_sprites):
                                            func=func_cell, pos=sprite.get_pos()))
         else:
             raise RuntimeError('[ERROR]: unknown sprite')
+    for agent in all_agents:
+        OBJECTS[agent.name] = agent
     return all_agents
 
+
+def print_minutes(start):
+    end = time.time()
+    print(f'minutes to finish the simulation: {(end - start) / 60}')
 # some

@@ -4,9 +4,9 @@ from random_walk import random_walk
 from harels_algorithm import harels_algorithm
 
 dictionary_of_algorithms = {
-    'random_walk': random_walk,
-    'harels_algorithm': harels_algorithm,
-    'max_sum_cells': max_sum_cells_alg,
+    'Random-Walk': random_walk,
+    'Max-sum_MST': harels_algorithm,
+    'CAMS': max_sum_cells_alg,
 }
 
 

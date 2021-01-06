@@ -7,4 +7,5 @@ env
 .idea
 .idea/workspace.xml
 data
+old_data
 .txt

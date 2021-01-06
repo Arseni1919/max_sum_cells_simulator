@@ -50,7 +50,13 @@ def calc_collisions(new_positions):
     for robot_name_1, pos_1 in new_positions.items():
         for robot_name_2, pos_2 in new_positions.items():
             if robot_name_1 != robot_name_2 and distance(pos_1, pos_2) == 0:
-                col += 1
+                robot1 = OBJECTS[robot_name_1]
+                robot2 = OBJECTS[robot_name_2]
+                if EXECUTE_DELAY:
+                    if OBJECTS[robot_name_1].delay == DELAY_OF_COLLISION:
+                        col += 1
+                else:
+                    col += 1
     return col
 
 

@@ -4,7 +4,10 @@ from main_help_functions import *
 # ---------------------------
 # ------INPUT SETTINGS-------
 # ---------------------------
-graph_file_name = "data/23.12.2020-14:15:11__20_80_no_restrictions/_file.graf"
+# folder_str = '04.01.2021-14:51:00_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_'
+folder_str = '05.01.2021-23:35:28_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_delay-v2_100'
+graph_file_name = 'data/' + folder_str + '/file.graf'
+# graph_file_name = "data/30.12.2020-13:11:35_50Grid-_20T-80R_40Bi-30Si_targets_apart_/file.graf"
 # need_to_plot_variance = False
 # need_to_plot_min_max = False
 # ---------------------------

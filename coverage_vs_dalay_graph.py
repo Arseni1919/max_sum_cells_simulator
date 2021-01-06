@@ -1,15 +1,14 @@
 from CONSTANTS import *
 
 graphs = {
-    'random_walk': [2325,2319,2283,2340,2340,2328],
-    'harels_algorithm': [1686,1677,1614,1716,1728,1755],
-    'max_sum_cells': [1662,1728,1614,1656,1641,1665],
+    'Random-Walk': [2310, 2361, 2298, 2340, 2292, 2331],
+    'Max-sum_MST': [1248, 1326, 1449, 1419, 1398, 1539],
+    'CAMS': [1290, 1389, 1353, 1308, 1293, 1353],
 }
 
-x = [5,10,30,50,70,90]
-
-for k,v in graphs.items():
-
+x = [2, 10, 30, 50, 70, 90]
+p_values_harels_vs_cells = [0.58, 0.25, 0.07, 0.14, 0.16, 0.03]
+for k, v in graphs.items():
     plt.plot(x, v, label=k)
 
 plt.xticks(x)

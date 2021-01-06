@@ -8,6 +8,7 @@ from tracker import tracker
 
 
 def main():
+    start = time.time()
     clock, screen, finish_sound = init_pygame()
     results_dict, graphs = create_results_dict()
 
@@ -36,6 +37,8 @@ def main():
     pickle_results_if(graphs, results_dict)
     plot_results_if(graphs)
     plot_collisions(results_dict)
+    print_t_test(graphs)
+    print_minutes(start)
 
 
 if __name__ == '__main__':

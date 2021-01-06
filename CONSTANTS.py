@@ -37,6 +37,7 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
+OBJECTS_SPRITES = {}
 OBJECTS = {}
 # Define constants for the screen width and height
 # SCREEN_WIDTH = 1000
@@ -61,27 +62,31 @@ logging.basicConfig(format=_format, level=logging.INFO,
 ADDING_TO_FILE_NAME = ''
 
 GRID_SIDE_SIZE = 50
+# GRID_SIDE_SIZE = 20
 NUM_OF_AGENTS = 80
 NUM_OF_TARGETS = 20
-NUMBER_OF_PROBLEMS = 10
-ITERATIONS_IN_BIG_LOOPS = 40
+NUMBER_OF_PROBLEMS = 50
+# NUMBER_OF_PROBLEMS = 5
+ITERATIONS_IN_BIG_LOOPS = 100
+# ITERATIONS_IN_BIG_LOOPS = 20
 ITERATIONS_IN_SMALL_LOOPS = 30
-DELAY_OF_COLLISION = 70
-# EXECUTE_DELAY = True
-EXECUTE_DELAY = False
+DELAY_OF_COLLISION = 100
+EXECUTE_DELAY = True
+# EXECUTE_DELAY = False
 # TARGETS_APART = True
 TARGETS_APART = False
 
 ADDING_TO_FILE_NAME += '%sGrid-_' % (GRID_SIDE_SIZE,)
 ADDING_TO_FILE_NAME += '%sT-%sR_' % (NUM_OF_TARGETS, NUM_OF_AGENTS)
 ADDING_TO_FILE_NAME += '%sBi-%sSi_' % (ITERATIONS_IN_BIG_LOOPS, ITERATIONS_IN_SMALL_LOOPS)
+ADDING_TO_FILE_NAME += '%sPRBLMS_' % (NUMBER_OF_PROBLEMS,)
 ADDING_TO_FILE_NAME += 'targets_apart_' if TARGETS_APART else ''
-ADDING_TO_FILE_NAME += 'delay_%s' % DELAY_OF_COLLISION if EXECUTE_DELAY else ''
+ADDING_TO_FILE_NAME += 'delay-v2_%s' % DELAY_OF_COLLISION if EXECUTE_DELAY else ''
 
 ALGORITHMS_TO_CHECK = [
-    ('random_walk', {}),
-    ('harels_algorithm', {}),
-    ('max_sum_cells', {}),
+    ('Random-Walk', {}),
+    ('Max-sum_MST', {}),
+    ('CAMS', {}),
 ]
 
 CELL_SIZE['CUSTOM'] = int(SCREEN_HEIGHT / GRID_SIDE_SIZE - 2)
@@ -107,8 +112,8 @@ CRED = 30
 # -------------------------------------------------- #
 SHOW_RANGES = True
 # SHOW_RANGES = False
-# NEED_TO_SAVE_RESULTS = False
 NEED_TO_SAVE_RESULTS = True
+# NEED_TO_SAVE_RESULTS = False
 NEED_TO_PLOT_RESULTS = True
 # NEED_TO_PLOT_VARIANCE, NEED_TO_PLOT_MIN_MAX = False, True
 NEED_TO_PLOT_VARIANCE, NEED_TO_PLOT_MIN_MAX = True, False
