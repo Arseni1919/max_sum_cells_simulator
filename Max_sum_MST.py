@@ -3,7 +3,7 @@ from pure_functions import *
 from target import *
 
 
-def harels_algorithm(params, all_agents):
+def Max_sum_MST_alg(params, all_agents):
     robots, targets, cells, robots_dict, cells_dict = separate_all_agents(all_agents)
     clear_domains_and_neighbours_update_runds_update_cells(all_agents, robots, targets, cells)
     set_FMR_for_targets(targets, robots)

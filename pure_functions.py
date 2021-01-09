@@ -53,10 +53,11 @@ def calc_collisions(new_positions):
                 robot1 = OBJECTS[robot_name_1]
                 robot2 = OBJECTS[robot_name_2]
                 if EXECUTE_DELAY:
-                    if OBJECTS[robot_name_1].delay == DELAY_OF_COLLISION:
+                    if robot1.delay == DELAY_OF_COLLISION:
                         col += 1
                 else:
-                    col += 1
+                    if robot1.prev_pos != robot1.pos:
+                        col += 1
     return col
 
 
@@ -207,15 +208,12 @@ def analyze_and_correct_new_positions(new_positions: dict, robots_dict, cells_di
                 new_positions[robot.name] = robot.pos
 
         for robot_name_1, pos_1 in new_positions.items():
+            d_robot = robots_dict[robot_name_1]
+
             for robot_name_2, pos_2 in new_positions.items():
                 if robot_name_1 != robot_name_2 and distance(pos_1, pos_2) == 0:
-                    dict_to_print = {robot_name_1: robots_dict[robot_name_1],
-                                     robot_name_2: robots_dict[robot_name_2]}
-                    # print_runds(dict_to_print, cells_dict)
-                    # graph_choice_list(choice_list)
-                    d_robot = robots_dict[robot_name_1]
                     d_robot.update_delay()
-                    # print(colored('\r[ERROR]: Robot %s delaying on the same pos!' % d_robot.num, 'yellow'), end='')
+                    break
 
     return new_positions
 

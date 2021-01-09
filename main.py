@@ -30,7 +30,7 @@ def main():
                 # blit_pygame(screen, all_sprites, new_positions)
 
                 update_statistics(results_dict, graphs, all_agents, collisions,
-                                  alg_name, iteration=i, problem=problem)
+                                  alg_name, iteration=i, problem=problem, new_positions=new_positions)
 
     close_pygame(finish_sound)
     print_results(results_dict)

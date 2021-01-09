@@ -11,7 +11,6 @@ class VariableNode:
         self.initial_pos = pos
         self.prev_pos = pos
         self.pos = pos
-        self.future_pos = pos
         self.delay = 0
         self.neighbours = []
         self.targets_nearby = []

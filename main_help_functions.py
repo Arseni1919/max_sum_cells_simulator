@@ -19,8 +19,16 @@ def init_pygame():
     return clock, screen, finish_sound
 
 
-def update_statistics(results_dict, graphs, all_agents, collisions, alg_name, iteration, problem):
+def update_statistics(results_dict,
+                      graphs,
+                      all_agents,
+                      collisions,
+                      alg_name,
+                      iteration,
+                      problem,
+                      new_positions):
     results_dict[alg_name]['col'].append(collisions)
+    results_dict[alg_name]['new_positions'].append(new_positions)
     graphs[alg_name][iteration][problem] = calculate_convergence(all_agents)
 
 
@@ -41,7 +49,7 @@ def create_results_dict():
     results_dict = {}
     graphs = {}
     for alg_name, params in ALGORITHMS_TO_CHECK:
-        results_dict[alg_name] = {'col': []}
+        results_dict[alg_name] = {'col': [], 'new_positions': []}
         graphs[alg_name] = np.zeros((ITERATIONS_IN_BIG_LOOPS, NUMBER_OF_PROBLEMS))
     return results_dict, graphs
 
@@ -91,7 +99,7 @@ def close_pygame(finish_sound):
 
 
 def pickle_results_if(graphs, results_dict):
-    if NEED_TO_SAVE_RESULTS:
+    if SAVE_RESULTS:
         suffix_str = time.strftime("%d.%m.%Y-%H:%M:%S")
         # algorithms = graphs.keys()
         # for alg in algorithms:
@@ -99,6 +107,7 @@ def pickle_results_if(graphs, results_dict):
         suffix_str = suffix_str + '_%s' % ADDING_TO_FILE_NAME
         os.mkdir('data/%s' % suffix_str)
         suffix_str = "data/%s/file" % suffix_str
+
         file_name = "%s.graf" % suffix_str
         # open the file for writing
         with open(file_name, 'wb') as fileObject:

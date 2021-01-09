@@ -1,12 +1,12 @@
 from CONSTANTS import *
-from max_sum_cells import *
+from CAMS import *
 from random_walk import random_walk
-from harels_algorithm import harels_algorithm
+from Max_sum_MST import Max_sum_MST_alg
 
 dictionary_of_algorithms = {
     'Random-Walk': random_walk,
-    'Max-sum_MST': harels_algorithm,
-    'CAMS': max_sum_cells_alg,
+    'Max-sum_MST': Max_sum_MST_alg,
+    'CAMS': CAMS_alg,
 }
 
 

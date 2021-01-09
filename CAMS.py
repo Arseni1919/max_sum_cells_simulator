@@ -6,7 +6,7 @@ from variable_node import *
 from function_node import *
 
 
-def max_sum_cells_alg(params, all_agents):
+def CAMS_alg(params, all_agents):
     robots_dict, cells_dict = update_domains_and_neighbours_and_runds(all_agents)
     init_message_boxes(all_agents)
     choice_list = create_choice_list(all_agents)
