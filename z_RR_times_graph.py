@@ -41,9 +41,9 @@ def add_graph(line_index, marker_index, graph_dict, alg_name, alg_label, color):
 add_graph(0, 4, data_RR, 'Max-sum_MST', 'Max-sum_MST', 'g')
 add_graph(3, 3, data_RR, 'CAMS', 'CAMS', 'm')
 
-ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-ax.set_ylabel('Time (seconds)')
-ax.set_xlabel('Iterations')
+ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', prop={'size': 15})
+ax.set_ylabel('Time (seconds)', fontsize=15)
+ax.set_xlabel('Iterations', fontsize=15)
 ax.set_xticks(range(iterations))
 # ax.set_xlim(xmin=iterations[0], xmax=iterations[-1])
 fig.tight_layout()
