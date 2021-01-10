@@ -33,8 +33,9 @@ def add_graph(line_index, marker_index, graph_dict, alg_name, alg_label, color):
 add_graph(0, 4, data_RR, 'Max-sum_MST', 'Max-sum_MST', 'g')
 add_graph(3, 3, data_RR, 'CAMS', 'CAMS', 'm')
 
-ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-ax.set_ylabel('Collisions')
+# ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', prop={'size': 13})
+ax.set_ylabel('Remaining Coverage Requirement')
 ax.set_xlabel('Iterations')
 # ax.set_xticks(iterations)
 # ax.set_xlim(xmin=iterations[0], xmax=iterations[-1])

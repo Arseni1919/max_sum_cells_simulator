@@ -63,9 +63,10 @@ add_graph(0, 4, graphs100nd, 'Max-sum_MST', 'Max-sum_MST', 'g')
 
 
 # ax.legend(loc='upper right')
-ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+# ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', prop={'size': 15})
 # ax.set_title('Results')
-ax.set_ylabel('Coverage')
+ax.set_ylabel('Remaining Coverage Requirement')
 ax.set_xlabel('Iterations')
 # ax.set_xticks(iterations)
 # ax.set_xlim(xmin=iterations[0], xmax=iterations[-1])

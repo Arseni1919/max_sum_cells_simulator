@@ -43,7 +43,7 @@ ax.bar(range(2), (
     np.std(max_iterations['CAMS'])
 ))
 # ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-ax.set_ylabel('Time Of The Longest Iteration')
+ax.set_ylabel('Time Of The Longest Iteration (seconds)')
 # ax.set_xlabel('Iterations')
 plt.xticks(range(2), ('Max-sum_MST', 'CAMS'))
 # ax.legend('Men')

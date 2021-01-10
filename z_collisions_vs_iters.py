@@ -63,7 +63,8 @@ add_graph(2, 2, results_dict100d, 'Max-sum_MST', 'Max-sum_MST\n(including breakd
 
 add_graph(3, 3, results_dict100nd, 'CAMS', 'CAMS', 'm')
 
-ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+# ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', prop={'size': 13})
 # ax.set_title('Collisions')
 ax.set_ylabel('Collisions')
 ax.set_xlabel('Iterations')
