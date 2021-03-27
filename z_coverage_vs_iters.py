@@ -9,6 +9,12 @@ folder_str2 = '04.01.2021-03:03:42_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_delay_100
 # folder_str2 = '08.01.2021-21:15:51_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_col-v2_delay-v2_100'
 graph_file_name2 = 'data/' + folder_str2 + '/file.graf'
 
+folder_str3 = '25.03.2021-22:29:38_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_col-v2_'
+graph_file_name3 = 'data/' + folder_str3 + '/file.graf'
+
+folder_str4 = '26.03.2021-10:50:31_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_col-v2_delay-v2_100'
+graph_file_name4 = 'data/' + folder_str4 + '/file.graf'
+
 graph_file_name = graph_file_name[:-5] + '.graf'
 with open(graph_file_name, 'rb') as fileObject:
     # load the object from the file into var b
@@ -19,6 +25,14 @@ with open(graph_file_name2, 'rb') as fileObject:
     # load the object from the file into var b
     graphs100d = pickle.load(fileObject)
 
+graph_file_name3 = graph_file_name3[:-5] + '.graf'
+with open(graph_file_name3, 'rb') as fileObject:
+    # load the object from the file into var b
+    graphsDSA = pickle.load(fileObject)
+
+with open(graph_file_name4, 'rb') as fileObject:
+    # load the object from the file into var b
+    graphsDSAd = pickle.load(fileObject)
 
 plt.style.use('bmh')
 lines = ['-', '--', '-.', ':', ]
@@ -60,7 +74,9 @@ add_graph(3, 3, graphs100nd, 'CAMS', 'CAMS', 'm')
 
 add_graph(0, 4, graphs100nd, 'Max-sum_MST', 'Max-sum_MST', 'g')
 
+add_graph(2, 4, graphsDSA, 'DSA_MST', 'DSA_MST', 'tab:brown')
 
+add_graph(2, 0, graphsDSAd, 'DSA_MST', 'DSA_MST\n(including breakdowns)', 'tab:purple')
 
 # ax.legend(loc='upper right')
 # ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')

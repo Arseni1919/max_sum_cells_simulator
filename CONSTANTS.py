@@ -68,7 +68,7 @@ NUM_OF_TARGETS = 20
 NUMBER_OF_PROBLEMS = 50
 # NUMBER_OF_PROBLEMS = 5
 ITERATIONS_IN_BIG_LOOPS = 100
-# ITERATIONS_IN_BIG_LOOPS = 5
+# ITERATIONS_IN_BIG_LOOPS = 10
 ITERATIONS_IN_SMALL_LOOPS = 30
 DELAY_OF_COLLISION = 100
 EXECUTE_DELAY = True
@@ -85,9 +85,10 @@ ADDING_TO_FILE_NAME += 'targets_apart_' if TARGETS_APART else ''
 ADDING_TO_FILE_NAME += 'delay-v2_%s' % DELAY_OF_COLLISION if EXECUTE_DELAY else ''
 
 ALGORITHMS_TO_CHECK = [
-    ('Random-Walk', {}),
-    ('Max-sum_MST', {}),
-    ('CAMS', {}),
+    # ('Random-Walk', {}),
+    # ('Max-sum_MST', {}),
+    # ('CAMS', {}),
+    ('DSA_MST', {}),
 ]
 
 CELL_SIZE['CUSTOM'] = int(SCREEN_HEIGHT / GRID_SIDE_SIZE - 2)

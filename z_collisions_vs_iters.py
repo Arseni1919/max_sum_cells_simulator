@@ -2,19 +2,32 @@ from CONSTANTS import *
 
 folder_str = '06.01.2021-20:17:14_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_col-v2_'
 graph_file_name = 'data/' + folder_str + '/file.graf'
-
-folder_str2 = '08.01.2021-21:15:51_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_col-v2_delay-v2_100'
-graph_file_name2 = 'data/' + folder_str2 + '/file.graf'
-
 graph_file_name = graph_file_name[:-5] + '.resu'
 with open(graph_file_name, 'rb') as fileObject:
     # load the object from the file into var b
     results_dict100nd = pickle.load(fileObject)
 
+folder_str2 = '08.01.2021-21:15:51_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_col-v2_delay-v2_100'
+graph_file_name2 = 'data/' + folder_str2 + '/file.graf'
 graph_file_name2 = graph_file_name2[:-5] + '.resu'
 with open(graph_file_name2, 'rb') as fileObject:
     # load the object from the file into var b
     results_dict100d = pickle.load(fileObject)
+
+
+folder_str3 = '25.03.2021-22:29:38_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_col-v2_'
+graph_file_name3 = 'data/' + folder_str3 + '/file.graf'
+graph_file_name3 = graph_file_name3[:-5] + '.resu'
+with open(graph_file_name3, 'rb') as fileObject:
+    # load the object from the file into var b
+    results_dictDSA = pickle.load(fileObject)
+
+
+folder_str4 = '26.03.2021-10:50:31_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_col-v2_delay-v2_100'
+graph_file_name4 = 'data/' + folder_str4 + '/file.resu'
+with open(graph_file_name4, 'rb') as fileObject:
+    # load the object from the file into var b
+    results_dictDSAd = pickle.load(fileObject)
 
 plt.style.use('bmh')
 lines = ['-', '--', '-.', ':', ]
@@ -22,18 +35,21 @@ lines.reverse()
 markers = ['o', '+', '.', ',', '_', '*']
 markers.reverse()
 marker_index, line_index = 0, 0
-algs = ['Random-Walk', 'CAMS', 'Max-sum_MST']
+algs = ['Random-Walk', 'CAMS', 'Max-sum_MST', 'DSA_MST']
 iterations = 100
 problems = range(50)
 fig, ax = plt.subplots()
 
-results_dict_list = [results_dict100d, results_dict100nd]
+results_dict_list = [results_dict100d, results_dict100nd, results_dictDSA, results_dictDSAd]
 
 for alg_name in algs:
     for rd in results_dict_list:
-        curr_col_list_yd = rd[alg_name]['col']
-        chunks = [curr_col_list_yd[x:x + iterations] for x in range(0, len(curr_col_list_yd), iterations)]
-        rd[alg_name] = np.array([np.cumsum(x) for x in chunks])
+        try:
+            curr_col_list_yd = rd[alg_name]['col']
+            chunks = [curr_col_list_yd[x:x + iterations] for x in range(0, len(curr_col_list_yd), iterations)]
+            rd[alg_name] = np.array([np.cumsum(x) for x in chunks])
+        except:
+            print(alg_name)
     print()
 
 
@@ -62,6 +78,11 @@ add_graph(0, 4, results_dict100nd, 'Max-sum_MST', 'Max-sum_MST', 'g')
 add_graph(2, 2, results_dict100d, 'Max-sum_MST', 'Max-sum_MST\n(including breakdowns)', 'tab:orange')
 
 add_graph(3, 3, results_dict100nd, 'CAMS', 'CAMS', 'm')
+
+add_graph(2, 4, results_dictDSA, 'DSA_MST', 'DSA_MST', 'tab:brown')
+
+add_graph(2, 0, results_dictDSAd, 'DSA_MST', 'DSA_MST\n(including breakdowns)', 'tab:purple')
+
 
 # ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
 ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', prop={'size': 15})

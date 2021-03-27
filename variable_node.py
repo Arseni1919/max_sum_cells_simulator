@@ -57,4 +57,12 @@ class VariableNode:
         else:
             self.delay -= 1
 
+    @staticmethod
+    def get_SR():
+        return SR
+
+    @staticmethod
+    def get_cred():
+        return CRED
+
 

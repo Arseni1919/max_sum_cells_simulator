@@ -66,3 +66,7 @@ class FunctionNode:
 
     def update_rund(self):
         self.rund = get_random_num()
+
+    @staticmethod
+    def get_req():
+        return REQ
