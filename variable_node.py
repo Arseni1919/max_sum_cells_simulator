@@ -13,8 +13,10 @@ class VariableNode:
         self.pos = pos
         self.delay = 0
         self.neighbours = []
+        self.neighbour_robots = []
         self.targets_nearby = []
         self.message_box = {}
+        self.cadsa_priority = round(random.random(), 7)
         if LOAD_PREVIOUS_POSITIONS:
             # self.rund = load_weight_of(self.name, file_name)['rund']
             self.pos = load_weight_of(self.name, FILE_NAME)['pos']

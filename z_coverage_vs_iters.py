@@ -31,8 +31,12 @@ with open(graph_file_name3, 'rb') as fileObject:
     graphsDSA = pickle.load(fileObject)
 
 with open(graph_file_name4, 'rb') as fileObject:
-    # load the object from the file into var b
     graphsDSAd = pickle.load(fileObject)
+
+folder_str5 = '27.03.2021-11:29:49_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_col-v2_CADSA'
+graph_file_name5 = 'data/' + folder_str5 + '/file.graf'
+with open(graph_file_name5, 'rb') as fileObject:
+    graphsCADSA = pickle.load(fileObject)
 
 plt.style.use('bmh')
 lines = ['-', '--', '-.', ':', ]
@@ -68,15 +72,19 @@ def add_graph(line_index, marker_index, graph_dict, alg_name, alg_label, color):
 
 add_graph(0, 0, graphs100nd, 'Random-Walk', 'Random-Walk', 'b')
 
-add_graph(2, 2, graphs100d, 'Max-sum_MST', 'Max-sum_MST\n(including breakdowns)', 'tab:orange')
+add_graph(3, 4, graphsDSA, 'DSA_MST', 'DSA_MST', 'tab:brown')
 
-add_graph(3, 3, graphs100nd, 'CAMS', 'CAMS', 'm')
+add_graph(3, 0, graphsDSAd, 'DSA_MST', 'DSA_MST\n(including breakdowns)', 'tab:purple')
 
-add_graph(0, 4, graphs100nd, 'Max-sum_MST', 'Max-sum_MST', 'g')
+add_graph(3, 3, graphsCADSA, 'DSA_MST', 'CADSA', 'tab:cyan')
 
-add_graph(2, 4, graphsDSA, 'DSA_MST', 'DSA_MST', 'tab:brown')
+add_graph(1, 4, graphs100nd, 'Max-sum_MST', 'Max-sum_MST', 'g')
 
-add_graph(2, 0, graphsDSAd, 'DSA_MST', 'DSA_MST\n(including breakdowns)', 'tab:purple')
+add_graph(1, 2, graphs100d, 'Max-sum_MST', 'Max-sum_MST\n(including breakdowns)', 'tab:orange')
+
+add_graph(2, 1, graphs100nd, 'CAMS', 'CAMS', 'm')
+
+
 
 # ax.legend(loc='upper right')
 # ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')

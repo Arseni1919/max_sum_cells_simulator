@@ -1,3 +1,3 @@
 from CONSTANTS import *
 
-print()
+print(round(random.random(), 7))

@@ -35,19 +35,33 @@ def get_new_positions(robots_dict, cells_dict, targets):
     """
     new_positions: new_positions[robot.name] = robot.pos
     """
-    new_positions = {}
     for robot_name, robot in robots_dict.items():
         robot.prev_pos = robot.pos
         robot.pos = get_robot_pos_dsa_mst(robot_name, robot, targets, robots_dict)
+
+    CADSA_part(robots_dict)
+
+    new_positions = {}
+    for robot_name, robot in robots_dict.items():
         new_positions[robot.name] = robot.pos
+
     return new_positions
+
+
+def CADSA_part(robots_dict):
+    if CADSA:
+        for robot_name, robot in robots_dict.items():
+            for nei in robot.neighbour_robots:
+                if robot.pos == nei.pos:
+                    if robot.cadsa_priority < nei.cadsa_priority:
+                        robot.pos = robot.prev_pos
 
 
 def get_robot_pos_dsa_mst(robot_name, robot, targets, robots_dict):
     """
-    # TODO: temp_req_set
-    # TODO: select_pos
-    # TODO: if dsa_condition
+    1. temp_req_set
+    2. select_pos
+    3. if dsa_condition
 
     SELECT_POS ( select_pos(pos_set, targets, SR) ):
         input:
@@ -57,8 +71,8 @@ def get_robot_pos_dsa_mst(robot_name, robot, targets, robots_dict):
         output:
         pos = (x, y)
     """
-    neighbours = get_neighbours(robot, robots_dict)
-    temp_req_set = calculate_temp_req(targets, neighbours)
+    robot.neighbour_robots = get_neighbours(robot, robots_dict)
+    temp_req_set = calculate_temp_req(targets, robot.neighbour_robots)
     pos_set = get_pos_set(robot)
     new_pos = select_pos(pos_set, temp_req_set, SR)
     if dsa_condition(robot, new_pos, robot.pos, temp_req_set):

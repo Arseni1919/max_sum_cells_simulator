@@ -29,6 +29,12 @@ with open(graph_file_name4, 'rb') as fileObject:
     # load the object from the file into var b
     results_dictDSAd = pickle.load(fileObject)
 
+folder_str5 = '27.03.2021-11:29:49_50Grid-_20T-80R_100Bi-30Si_50PRBLMS_col-v2_CADSA'
+graph_file_name5 = 'data/' + folder_str5 + '/file.resu'
+with open(graph_file_name5, 'rb') as fileObject:
+    # load the object from the file into var b
+    results_dictCADSA = pickle.load(fileObject)
+
 plt.style.use('bmh')
 lines = ['-', '--', '-.', ':', ]
 lines.reverse()
@@ -40,7 +46,11 @@ iterations = 100
 problems = range(50)
 fig, ax = plt.subplots()
 
-results_dict_list = [results_dict100d, results_dict100nd, results_dictDSA, results_dictDSAd]
+results_dict_list = [results_dict100d,
+                     results_dict100nd,
+                     results_dictDSA,
+                     results_dictDSAd,
+                     results_dictCADSA]
 
 for alg_name in algs:
     for rd in results_dict_list:
@@ -73,15 +83,18 @@ def add_graph(line_index, marker_index, graph_dict, alg_name, alg_label, color):
 
 add_graph(0, 0, results_dict100nd, 'Random-Walk', 'Random-Walk', 'b')
 
-add_graph(0, 4, results_dict100nd, 'Max-sum_MST', 'Max-sum_MST', 'g')
+add_graph(3, 4, results_dictDSA, 'DSA_MST', 'DSA_MST', 'tab:brown')
 
-add_graph(2, 2, results_dict100d, 'Max-sum_MST', 'Max-sum_MST\n(including breakdowns)', 'tab:orange')
+add_graph(3, 0, results_dictDSAd, 'DSA_MST', 'DSA_MST\n(including breakdowns)', 'tab:purple')
 
-add_graph(3, 3, results_dict100nd, 'CAMS', 'CAMS', 'm')
+add_graph(3, 3, results_dictCADSA, 'DSA_MST', 'CADSA', 'tab:cyan')
 
-add_graph(2, 4, results_dictDSA, 'DSA_MST', 'DSA_MST', 'tab:brown')
+add_graph(1, 4, results_dict100nd, 'Max-sum_MST', 'Max-sum_MST', 'g')
 
-add_graph(2, 0, results_dictDSAd, 'DSA_MST', 'DSA_MST\n(including breakdowns)', 'tab:purple')
+add_graph(1, 2, results_dict100d, 'Max-sum_MST', 'Max-sum_MST\n(including breakdowns)', 'tab:orange')
+
+add_graph(2, 1, results_dict100nd, 'CAMS', 'CAMS', 'm')
+
 
 
 # ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')

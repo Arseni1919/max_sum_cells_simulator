@@ -66,15 +66,19 @@ GRID_SIDE_SIZE = 50
 NUM_OF_AGENTS = 80
 NUM_OF_TARGETS = 20
 NUMBER_OF_PROBLEMS = 50
-# NUMBER_OF_PROBLEMS = 5
+# NUMBER_OF_PROBLEMS = 2
 ITERATIONS_IN_BIG_LOOPS = 100
 # ITERATIONS_IN_BIG_LOOPS = 10
 ITERATIONS_IN_SMALL_LOOPS = 30
 DELAY_OF_COLLISION = 100
-EXECUTE_DELAY = True
-# EXECUTE_DELAY = False
+# EXECUTE_DELAY = True
+EXECUTE_DELAY = False
 # TARGETS_APART = True
 TARGETS_APART = False
+# ----------------------DSA------------------------- #
+CADSA = True
+# CADSA = False
+# -------------------------------------------------- #
 
 ADDING_TO_FILE_NAME += '%sGrid-_' % (GRID_SIDE_SIZE,)
 ADDING_TO_FILE_NAME += '%sT-%sR_' % (NUM_OF_TARGETS, NUM_OF_AGENTS)
@@ -83,7 +87,7 @@ ADDING_TO_FILE_NAME += '%sPRBLMS_' % (NUMBER_OF_PROBLEMS,)
 ADDING_TO_FILE_NAME += 'col-v2_'
 ADDING_TO_FILE_NAME += 'targets_apart_' if TARGETS_APART else ''
 ADDING_TO_FILE_NAME += 'delay-v2_%s' % DELAY_OF_COLLISION if EXECUTE_DELAY else ''
-
+ADDING_TO_FILE_NAME += 'CADSA' if CADSA else ''
 ALGORITHMS_TO_CHECK = [
     # ('Random-Walk', {}),
     # ('Max-sum_MST', {}),
@@ -128,6 +132,9 @@ LOAD_PREVIOUS_POSITIONS = False
 LOAD_PREVIOUS_WEIGHTS = False
 SAVE_WEIGHTS = True
 # SAVE_WEIGHTS = False
+
+
+
 
 
 
